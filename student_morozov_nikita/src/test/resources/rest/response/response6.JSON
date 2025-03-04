@@ -1,0 +1,13 @@
+{
+  "errors": [
+    {
+      "errorCode": "ERROR_CODE_5",
+      "description": "DateTo must not be less DateFrom!"
+    }
+  ],
+  "personFirstName": null,
+  "personLastName": null,
+  "agreementDateFrom": null,
+  "agreementDateTo": null,
+  "agreementPrice": null
+}

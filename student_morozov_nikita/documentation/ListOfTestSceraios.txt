@@ -1,0 +1,127 @@
+Список тестов для проверки подключения через MocMVC
+
+1) Проверка на возвращаемое значение personFirstName
+   personFirstName не указан -> ошибка personFirstName Empty
+    request
+    {
+        "personFirstName": "",
+        "personLastName": "Doe",
+        "agreementDateFrom": "2024-03-23",
+        "agreementDateTo": "2025-03-23"
+    }
+
+    response
+    {
+        "errors": [
+            {
+                "field": "PersonFirstName",
+                "message": "Must not be empty!"
+            }
+        ],
+        "personFirstName": null,
+        "personLastName": null,
+        "agreementDateFrom": null,
+        "agreementDateTo": null,
+        "agreementPrice": null
+    }
+2) Проверка на возвращаемое значение personLastName
+   personLastName не указан -> ошибка personLastName Empty
+
+    request
+   {
+       "personFirstName": "John",
+       "personLastName": "",
+       "agreementDateFrom": "2024-03-23",
+       "agreementDateTo": "2025-03-23"
+   }
+   response
+   {
+       "errors": [
+           {
+               "field": "PersonLastName",
+               "message": "Must not be empty!"
+           }
+       ],
+       "personFirstName": null,
+       "personLastName": null,
+       "agreementDateFrom": null,
+       "agreementDateTo": null,
+       "agreementPrice": null
+   }
+
+
+3) Проверка на возвращаемое значение agreementDateFrom
+   agreementDateFrom не указан -> ошибка agreementDateFrom Empty
+
+    {
+        "personFirstName": "John",
+        "personLastName": "Doe",
+        "agreementDateFrom": "",
+        "agreementDateTo": "2025-03-23"
+    }
+    {
+        "errors": [
+            {
+                "field": "DateFrom",
+                "message": "DateFrom must not be null"
+            },
+            {
+                "field": "DateFrom",
+                "message": "DateTo must not be null"
+            }
+        ],
+        "personFirstName": null,
+        "personLastName": null,
+        "agreementDateFrom": null,
+        "agreementDateTo": null,
+        "agreementPrice": null
+    }
+
+
+4) Проверка на возвращаемое значение agreementDateTo
+   agreementDateTo не указан -> ошибка agreementDateTo Empty
+   {
+       "personFirstName": "John",
+       "personLastName": "Doe",
+       "agreementDateFrom": "2024-03-23",
+       "agreementDateTo": ""
+   }
+   {
+       "errors": [
+           {
+               "field": "DateFrom",
+               "message": "DateTo must not be null"
+           }
+       ],
+       "personFirstName": null,
+       "personLastName": null,
+       "agreementDateFrom": null,
+       "agreementDateTo": null,
+       "agreementPrice": null
+   }
+
+
+5) Проверка на разницу дата
+    agreementDateFrom > agreementDateTo -> ошибка
+
+    {
+        "personFirstName": "John",
+        "personLastName": "Doe",
+        "agreementDateFrom": "2025-05-23",
+        "agreementDateTo": "2025-04-23"
+    }
+
+    {
+        "errors": [
+            {
+                "field": "DateToLessDateFrom",
+                "message": "DateTo must not be less DateFrom"
+            }
+        ],
+        "personFirstName": null,
+        "personLastName": null,
+        "agreementDateFrom": null,
+        "agreementDateTo": null,
+        "agreementPrice": null
+    }
+
