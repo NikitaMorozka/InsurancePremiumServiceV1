@@ -1,4 +1,4 @@
-package org.javaguru.travel.insurance.core;
+package org.javaguru.travel.insurance.core.util;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Component
-public class ErrorMessageService {
-    private Properties props;
+public class ErrorMessageUtil {
 
-    ErrorMessageService() {
+    private final Properties props;
+
+    ErrorMessageUtil() {
         try {
             props = PropertiesLoaderUtils.loadProperties(new ClassPathResource("errorCodes.properties"));
         } catch (IOException e) {

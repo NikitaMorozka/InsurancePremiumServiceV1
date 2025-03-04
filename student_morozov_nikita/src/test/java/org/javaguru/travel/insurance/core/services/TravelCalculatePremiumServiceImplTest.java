@@ -1,5 +1,7 @@
-package org.javaguru.travel.insurance.core;
+package org.javaguru.travel.insurance.core.services;
 
+import org.javaguru.travel.insurance.core.underwriting.CalculatePremiumUnderwriting;
+import org.javaguru.travel.insurance.core.util.DateTimeUtil;
 import org.javaguru.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -10,25 +12,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-@ExtendWith(MockitoExtension.class) // Подключаем расширение Mockito
 
+@ExtendWith(MockitoExtension.class) // Подключаем расширение Mockito
 class TravelCalculatePremiumServiceImplTest {
 
-    @Mock private DateTimeService dateTimeService;// Создаём мок-зависимость
-    @Mock private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
     @Mock private CalculatePremiumUnderwriting premiumUnderwriting;
+    @Mock private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
     @Mock private TravelCalculatePremiumRequest request;
 
     @InjectMocks
     private TravelCalculatePremiumServiceImpl calculate;// Внедряем моки в тестируемый класс
-
 
     @Test
     @DisplayName("Тест: совпадения поля PersonFirstName в запросе и ответе")
@@ -41,7 +39,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     @DisplayName("Тест: совпадения поля PersonLastName в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldLastName() throws ParseException {
+    public void shouldReturnResponseMatchingRequestFieldLastName() {
         when(request.getPersonLastName()).thenReturn("PersonLastName");
         when(requestValidator.validate(request)).thenReturn(List.of());
         var response = calculate.calculatePremium(request);
@@ -50,7 +48,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     @DisplayName("Тест: совпадения поля DateFrom в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldDateFrom() throws ParseException {
+    public void shouldReturnResponseMatchingRequestFieldDateFrom() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
         var response = calculate.calculatePremium(request);
@@ -59,7 +57,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     @DisplayName("Тест: совпадения поля DateTo в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldDateTo() throws ParseException {
+    public void shouldReturnResponseMatchingRequestFieldDateTo() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
         var response = calculate.calculatePremium(request);
