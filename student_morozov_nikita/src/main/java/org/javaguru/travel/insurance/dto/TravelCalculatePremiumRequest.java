@@ -25,6 +25,4 @@ public class TravelCalculatePremiumRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateFrom;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateTo;
     @JsonAlias("selected_risks") private List<String> selectedRisks;
-
-
 }

@@ -7,12 +7,12 @@
     </appender>
 
     <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS:-student_morozov_nikita/LOGS_IS_UNDEFINED}/application-logger.log</file>
+        <file>${LOGS}/application-logger.log</file>
         <encoder>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS:-student_morozov_nikita/LOGS_IS_UNDEFINED}/archived/application-logger-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS}/archived/application-logger-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>1MB</maxFileSize>
@@ -21,12 +21,12 @@
     </appender>
 
     <appender name="REQUEST_RESPONSE_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS:-student_morozov_nikita/LOGS_IS_UNDEFINED}/request-response-logger.log</file>
+        <file>${LOGS}/request-response-logger.log</file>
         <encoder>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS:-student_morozov_nikita/LOGS_IS_UNDEFINED}/archived/request-response-logger-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS}/archived/request-response-logger-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>1MB</maxFileSize>

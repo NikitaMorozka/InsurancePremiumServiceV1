@@ -17,4 +17,4 @@ public class ErrorValidationFactory {
         String err = errorsConf.getProps(error);
         return new ValidationError(error, err);
     }
-}
+} 

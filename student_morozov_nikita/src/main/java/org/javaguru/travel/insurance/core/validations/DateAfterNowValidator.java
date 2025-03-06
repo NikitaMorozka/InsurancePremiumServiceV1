@@ -14,6 +14,8 @@ import java.util.Optional;
 class DateAfterNowValidator implements Validation {
     private final ErrorValidationFactory errorsHandler;
     @Override
+
+    // поумать как переделать
     public Optional<ValidationError> executeValidation(TravelCalculatePremiumRequest request) {
         LocalDate dateFrom = request.getAgreementDateFrom();
         LocalDate dateTo = request.getAgreementDateTo();
