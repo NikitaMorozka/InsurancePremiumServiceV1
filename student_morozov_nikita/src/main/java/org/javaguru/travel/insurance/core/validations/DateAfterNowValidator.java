@@ -7,20 +7,27 @@ import org.javaguru.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class DateAfterNowValidator implements Validation {
     private final ErrorValidationFactory errorsHandler;
-    @Override
 
-    // поумать как переделать
+    private LocalDate getCurrentDate(){
+        ZoneId zoneId = ZoneId.of("UTC");
+        return ZonedDateTime.now(zoneId).toLocalDate();
+    }
+    @Override
     public Optional<ValidationError> executeValidation(TravelCalculatePremiumRequest request) {
         LocalDate dateFrom = request.getAgreementDateFrom();
         LocalDate dateTo = request.getAgreementDateTo();
+        LocalDate currentDate = getCurrentDate();
+
         if (dateFrom != null && dateTo != null) {
-            if (dateTo.isBefore(LocalDate.now()) || dateFrom.isBefore(LocalDate.now())) {
+            if (dateTo.isBefore(currentDate) || dateFrom.isBefore(currentDate)) {
                 return Optional.of(errorsHandler.processing("ERROR_CODE_6"));
             }
         }
