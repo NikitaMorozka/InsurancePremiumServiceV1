@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)//: Интегрирует Spring с JUnit 5, чтобы использовать аннотации вроде @Autowired.
 @DataJpaTest//Настраивает тестовую среду
-            //Создаёт базу данных в памяти (H2).
-            //Загружает только компоненты, связанные с JPA (репозитории, сущности).
-            //Делает тесты транзакционными (изменения откатываются после теста).
+        //Создаёт базу данных в памяти (H2).
+        //Загружает только компоненты, связанные с JPA (репозитории, сущности).
+        //Делает тесты транзакционными (изменения откатываются после теста).
 class ClassifierRepositoryTest {
 
-    @Autowired private ClassifierRepository classifierRepository;
+    @Autowired
+    private ClassifierRepository classifierRepository;
 
     @Test
     @DisplayName("Test: Classifier table is present")
@@ -32,6 +33,7 @@ class ClassifierRepositoryTest {
     @DisplayName("Test: Can find record by Title")
     public void shouldFindRiskTypeClassifier() {
         Optional<Classifier> riskTypeOpt = classifierRepository.findByTitle("RISK_TYPE");
+
         assertTrue(riskTypeOpt.isPresent());
         assertEquals(riskTypeOpt.get().getTitle(), "RISK_TYPE");
     }
@@ -40,6 +42,7 @@ class ClassifierRepositoryTest {
     @DisplayName("Test: Can't find record with Fake title")
     public void shouldNotFindFakeClassifier() {
         Optional<Classifier> riskTypeOpt = classifierRepository.findByTitle("RISKS_TYPE");
+
         assertTrue(riskTypeOpt.isEmpty());
     }
 

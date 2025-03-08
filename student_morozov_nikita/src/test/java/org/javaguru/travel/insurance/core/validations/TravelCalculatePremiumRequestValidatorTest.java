@@ -31,11 +31,13 @@ public class TravelCalculatePremiumRequestValidatorTest {
     @DisplayName("Тест: 2 ошибки валидации")
     public void shouldReturnErrorsForNullFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
+
         when(validations.getFirst().executeValidation(request)).thenReturn(Optional.of(new ValidationError()));
         when(validations.getLast().executeValidation(request)).thenReturn(Optional.of(new ValidationError()));
 
         ReflectionTestUtils.setField(requestValidator, "travelValidations", validations);
         List<ValidationError> errors = requestValidator.validate(request);
+
         assertEquals(errors.size(), 2);
     }
 
@@ -43,10 +45,13 @@ public class TravelCalculatePremiumRequestValidatorTest {
     @DisplayName("Тест: Ошибок валидации нет")
     public void shouldReturnErrorsForFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
+
         when(validations.getFirst().executeValidation(request)).thenReturn(Optional.empty());
         when(validations.getLast().executeValidation(request)).thenReturn(Optional.empty());
+
         ReflectionTestUtils.setField(requestValidator, "travelValidations", validations);
         List<ValidationError> errors = requestValidator.validate(request);
+
         assertTrue(errors.isEmpty());
     }
 

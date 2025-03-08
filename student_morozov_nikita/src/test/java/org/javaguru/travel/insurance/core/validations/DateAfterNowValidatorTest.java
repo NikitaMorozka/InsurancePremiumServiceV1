@@ -30,7 +30,9 @@ public class DateAfterNowValidatorTest {
     public void shouldNotReturnErrorForValidDateRange() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
+
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.executeValidation(request);
+
         assertTrue(validateDateAfterNow.isEmpty());
     }
 
@@ -40,7 +42,9 @@ public class DateAfterNowValidatorTest {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now().minusDays(1));
         when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
+
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.executeValidation(request);
+
         assertTrue(validateDateAfterNow.isPresent());
         assertEquals(validateDateAfterNow.get().getErrorCode(), "ERROR_CODE_6");
         assertEquals(validateDateAfterNow.get().getDescription(), "Both DateFrom and DateTo must be in the future!");
@@ -50,10 +54,12 @@ public class DateAfterNowValidatorTest {
     @Test
     @DisplayName("Тест: обе даты должны быть в будущем")
     public void shouldReturnErrorForNonFutureAgreementDates() {
-        when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2010, 1, 20));
-        when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2010, 1, 20));
+        when(request.getAgreementDateFrom()).thenReturn(LocalDate.now().minusDays(1));
+        when(request.getAgreementDateTo()).thenReturn(LocalDate.now().minusDays(1));
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
+
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.executeValidation(request);
+
         assertTrue(validateDateAfterNow.isPresent());
         assertEquals(validateDateAfterNow.get().getErrorCode(), "ERROR_CODE_6");
         assertEquals(validateDateAfterNow.get().getDescription(), "Both DateFrom and DateTo must be in the future!");

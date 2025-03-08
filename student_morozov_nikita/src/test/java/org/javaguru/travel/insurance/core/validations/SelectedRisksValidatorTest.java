@@ -30,7 +30,9 @@ public class SelectedRisksValidatorTest {
     public void shouldReturnValidationErrorWhenSelectedRisksIsEmpty(){
         when(request.getSelectedRisks()).thenReturn(List.of());
         when(errorsHandler.processing("ERROR_CODE_7")).thenReturn(new ValidationError("ERROR_CODE_7","Must not be empty!"));
+
         Optional<ValidationError> validationError = selectedRisksValidator.executeValidation(request);
+
         assertEquals(validationError.get().getErrorCode(), "ERROR_CODE_7");
         assertEquals(validationError.get().getDescription(), "Must not be empty!");
     }
@@ -39,7 +41,9 @@ public class SelectedRisksValidatorTest {
     @DisplayName("Тест: в список рисков переданы значения")
     public void shouldPassValidationWhenSelectedRisksAreProvided(){
         when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
+
         Optional<ValidationError> validationError = selectedRisksValidator.executeValidation(request);
+
         assertTrue(validationError.isEmpty());
     }
 }

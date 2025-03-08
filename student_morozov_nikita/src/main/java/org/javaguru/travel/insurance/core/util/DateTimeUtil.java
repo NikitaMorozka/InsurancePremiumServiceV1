@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 public class DateTimeUtil {
-    public Long calculateDaysDifference(LocalDate dateFrom, LocalDate dateTo){
+    public long calculateDaysDifference(LocalDate dateFrom, LocalDate dateTo){
         return ChronoUnit.DAYS.between(dateFrom, dateTo);
     }
 }

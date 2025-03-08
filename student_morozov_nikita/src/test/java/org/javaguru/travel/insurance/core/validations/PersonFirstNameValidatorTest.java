@@ -36,7 +36,9 @@ public class PersonFirstNameValidatorTest {
     void shouldReturnErrorWhenPersonFirstNameIsNull() {
         when(request.getPersonFirstName()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_1")).thenReturn(new ValidationError("ERROR_CODE_1","Field personFirstName is empty!"));
+
         Optional<ValidationError> validateErrors = personFirstNameValidator.executeValidation(request);
+
         assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_1");
         assertEquals(validateErrors.get().getDescription(), "Field personFirstName is empty!");
         assertFalse(validateErrors.isEmpty());
@@ -47,7 +49,9 @@ public class PersonFirstNameValidatorTest {
     void shouldReturnErrorWhenPersonFirstNameIsEmpty() {
         when(request.getPersonFirstName()).thenReturn("");
         when(errorsHandler.processing("ERROR_CODE_1")).thenReturn(new ValidationError("ERROR_CODE_1","Field personFirstName is empty!"));
+
         Optional<ValidationError> validateErrors = personFirstNameValidator.executeValidation(request);
+
         assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_1");
         assertEquals(validateErrors.get().getDescription(), "Field personFirstName is empty!");
         assertFalse(validateErrors.isEmpty());

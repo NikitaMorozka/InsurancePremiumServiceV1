@@ -3,6 +3,9 @@ package org.javaguru.travel.insurance.rest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,52 +31,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class TravelCalculatePremiumControllerTest {
 
-    @Autowired private MockMvc mockMvc;
-    @Autowired private JsonFileReader jsonFileReader;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private JsonFileReader jsonFileReader;
 
-    public String getJsonRequest(String path) {
-        return "src/test/resources/rest/request/" + path;
-    }
-    public String getJsonResponse(String path) {
-        return "src/test/resources/rest/response/" + path;
-    }
+    @ParameterizedTest
+    @MethodSource({"jsonRequestResponseFiles"})
+    public void сontrollerTest(String jsonRequest, String jsonResponse) throws Exception {
+        StringBuilder filesPathRequest = new StringBuilder("src/test/resources/rest/request/");
+        StringBuilder filesPathResponse = new StringBuilder("src/test/resources/rest/response/");
 
-    public void ControllerTest(String jsonRequest, String jsonResponse) throws Exception {
         mockMvc.perform(post("/insurance/travel/")
-                        .content(jsonFileReader.readJsonFromFile(jsonRequest))
+                        .content(jsonFileReader.readJsonFromFile(filesPathRequest.append(jsonRequest).toString()))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().json(jsonFileReader.readJsonFromFile(jsonResponse)))
+                .andExpect(content().json(jsonFileReader.readJsonFromFile(filesPathResponse.append(jsonResponse).toString())))
                 .andReturn();
     }
 
-    @Test
-    public void simpleRestControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request1.JSON"),getJsonResponse("response1.JSON"));
-    }
-    @Test
-    public void personFirstNameRestControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request2.JSON"),getJsonResponse("response2.JSON"));
-    }
-    @Test
-    public void personLastNameRestControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request3.JSON"),getJsonResponse("response3.JSON"));
-    }
-    @Test
-    public void agreementDateFromRestControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request4.JSON"),getJsonResponse("response4.JSON"));
-    }
-    @Test
-    public void agreementDateToRestControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request5.JSON"),getJsonResponse("response5.JSON"));
-    }
-    @Test
-    public void DateToLessDateFromControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request6.JSON"),getJsonResponse("response6.JSON"));
-    }
-    @Test
-    public void PassValidationDateAfterNowControllerTest() throws Exception {
-        ControllerTest(getJsonRequest("request7.JSON"),getJsonResponse("response7.JSON"));
+    private static Stream<Arguments> jsonRequestResponseFiles() {
+        return Stream.of(
+                Arguments.of("request1.JSON", "response1.JSON"),
+                Arguments.of("request2.JSON", "response2.JSON"),
+                Arguments.of("request3.JSON", "response3.JSON"),
+                Arguments.of("request4.JSON", "response4.JSON"),
+                Arguments.of("request5.JSON", "response5.JSON"),
+                Arguments.of("request6.JSON", "response6.JSON"),
+                Arguments.of("request7.JSON", "response7.JSON")
+        );
     }
 
 }

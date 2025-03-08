@@ -48,7 +48,9 @@ public class PersonLastNameValidatorTest {
     void shouldReturnErrorWhenPersonLastNameIsEmpty() {
         when(request.getPersonLastName()).thenReturn("");
         when(errorsHandler.processing("ERROR_CODE_2")).thenReturn(new ValidationError("ERROR_CODE_2","Field personLastName is empty!"));
+
         Optional<ValidationError> validateErrors = personLastNameValidator.executeValidation(request);
+
         assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_2");
         assertEquals(validateErrors.get().getDescription(), "Field personLastName is empty!");
         assertFalse(validateErrors.isEmpty());

@@ -29,7 +29,9 @@ public class DateToValidatorTest {
     @DisplayName("Тест: правильно заполненные поля")
     void shouldNotReturnErrorForValidDateFrom() {
         when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2025, 1, 1));
+
         Optional<ValidationError> validateErrors = dateToValidator.executeValidation(request);
+
         assertTrue(validateErrors.isEmpty());
     }
 
@@ -38,7 +40,9 @@ public class DateToValidatorTest {
     void shouldReturnErrorWhenDateToIsNull() {
         when(request.getAgreementDateTo()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_4")).thenReturn(new ValidationError("ERROR_CODE_4","DateTo must not be null!"));
+
         Optional<ValidationError> validationError = dateToValidator.executeValidation(request);
+
         assertTrue(validationError.isPresent());
         assertEquals(validationError.get().getErrorCode(), "ERROR_CODE_4");
         assertEquals(validationError.get().getDescription(), "DateTo must not be null!");

@@ -12,18 +12,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class) // Подключаем расширение Mockito
 class TravelCalculatePremiumServiceImplTest {
 
-    @Mock private CalculatePremiumUnderwriting premiumUnderwriting;
-    @Mock private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
-    @Mock private TravelCalculatePremiumRequest request;
+    @Mock
+    private CalculatePremiumUnderwriting premiumUnderwriting;
+    @Mock
+    private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
+    @Mock
+    private TravelCalculatePremiumRequest request;
 
     @InjectMocks
     private TravelCalculatePremiumServiceImpl calculate;// Внедряем моки в тестируемый класс
@@ -33,7 +38,9 @@ class TravelCalculatePremiumServiceImplTest {
     public void shouldReturnResponseMatchingRequestFieldFirstName() {
         when(request.getPersonLastName()).thenReturn("PersonFirstName");
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = calculate.calculatePremium(request);
+
         assertEquals(response.getPersonLastName(), "PersonFirstName");
     }
 
@@ -42,8 +49,10 @@ class TravelCalculatePremiumServiceImplTest {
     public void shouldReturnResponseMatchingRequestFieldLastName() {
         when(request.getPersonLastName()).thenReturn("PersonLastName");
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = calculate.calculatePremium(request);
-        assertEquals(request.getPersonFirstName(),response.getPersonFirstName());
+
+        assertEquals(request.getPersonFirstName(), response.getPersonFirstName());
     }
 
     @Test
@@ -51,8 +60,10 @@ class TravelCalculatePremiumServiceImplTest {
     public void shouldReturnResponseMatchingRequestFieldDateFrom() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = calculate.calculatePremium(request);
-        assertEquals(request.getAgreementDateFrom(),response.getAgreementDateFrom());
+
+        assertEquals(request.getAgreementDateFrom(), response.getAgreementDateFrom());
     }
 
     @Test
@@ -60,8 +71,10 @@ class TravelCalculatePremiumServiceImplTest {
     public void shouldReturnResponseMatchingRequestFieldDateTo() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
+
         var response = calculate.calculatePremium(request);
-        assertEquals(request.getAgreementDateTo(),response.getAgreementDateTo());
+
+        assertEquals(request.getAgreementDateTo(), response.getAgreementDateTo());
     }
 
     @Test
@@ -71,8 +84,10 @@ class TravelCalculatePremiumServiceImplTest {
         when(request.getPersonLastName()).thenReturn("LastName");
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
-       when(requestValidator.validate(request)).thenReturn(List.of());
+        when(requestValidator.validate(request)).thenReturn(List.of());
+
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+
         assertNotNull(response);
     }
 
@@ -82,6 +97,7 @@ class TravelCalculatePremiumServiceImplTest {
         var validationError = new ValidationError("field", "message");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
         var response = calculate.calculatePremium(request);
+
         assertTrue(response.hasErrors());
     }
 
@@ -92,9 +108,11 @@ class TravelCalculatePremiumServiceImplTest {
                 new ValidationError("field1", "message1"),
                 new ValidationError("field2", "message2")
         );
+
         when(requestValidator.validate(request)).thenReturn(validationErrors);
         var response = calculate.calculatePremium(request);
-        assertEquals(response.getErrors().size(),2);
+
+        assertEquals(response.getErrors().size(), 2);
     }
 
     @Test
@@ -103,8 +121,9 @@ class TravelCalculatePremiumServiceImplTest {
         var validationErrors = new ValidationError("field1", "message1");
         when(requestValidator.validate(request)).thenReturn(List.of(validationErrors));
         var response = calculate.calculatePremium(request);
-        assertEquals(response.getErrors().getFirst().getErrorCode(),"field1");
-        assertEquals(response.getErrors().getFirst().getDescription(),"message1");
+
+        assertEquals(response.getErrors().getFirst().getErrorCode(), "field1");
+        assertEquals(response.getErrors().getFirst().getDescription(), "message1");
         assertNull(response.getPersonFirstName());
     }
 
