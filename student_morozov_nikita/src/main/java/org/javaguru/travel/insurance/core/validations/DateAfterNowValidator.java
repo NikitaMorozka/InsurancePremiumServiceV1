@@ -13,15 +13,16 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateAfterNowValidator implements Validation {
+class DateAfterNowValidator extends ValidationImpl {
     private final ErrorValidationFactory errorsHandler;
 
     private LocalDate getCurrentDate(){
         ZoneId zoneId = ZoneId.of("UTC");
         return ZonedDateTime.now(zoneId).toLocalDate();
     }
+
     @Override
-    public Optional<ValidationError> executeValidation(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
         LocalDate dateFrom = request.getAgreementDateFrom();
         LocalDate dateTo = request.getAgreementDateTo();
         LocalDate currentDate = getCurrentDate();

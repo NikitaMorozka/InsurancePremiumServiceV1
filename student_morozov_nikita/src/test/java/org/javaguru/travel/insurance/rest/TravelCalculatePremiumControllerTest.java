@@ -52,13 +52,15 @@ public class TravelCalculatePremiumControllerTest {
 
     private static Stream<Arguments> jsonRequestResponseFiles() {
         return Stream.of(
-                Arguments.of("request1.JSON", "response1.JSON"),
-                Arguments.of("request2.JSON", "response2.JSON"),
-                Arguments.of("request3.JSON", "response3.JSON"),
-                Arguments.of("request4.JSON", "response4.JSON"),
-                Arguments.of("request5.JSON", "response5.JSON"),
-                Arguments.of("request6.JSON", "response6.JSON"),
-                Arguments.of("request7.JSON", "response7.JSON")
+                Arguments.of("request1.json", "response1.json"),
+                Arguments.of("request2.json", "response2.json"),
+                Arguments.of("request3.json", "response3.json"),
+                Arguments.of("request4.json", "response4.json"),
+                Arguments.of("request5.json", "response5.json"),
+                Arguments.of("request6.json", "response6.json"),
+                Arguments.of("request7.json", "response7.json"),
+                Arguments.of("request8.json", "response8.json"),
+                Arguments.of("request9.json", "response9.json")
         );
     }
 

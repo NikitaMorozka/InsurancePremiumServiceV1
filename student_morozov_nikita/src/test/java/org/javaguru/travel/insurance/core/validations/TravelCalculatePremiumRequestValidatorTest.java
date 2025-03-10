@@ -24,7 +24,7 @@ public class TravelCalculatePremiumRequestValidatorTest {
     TravelCalculatePremiumRequest request;
 
     @InjectMocks
-    private TravelCalculatePremiumRequestImpl requestValidator;
+    private TravelCalculatePremiumRequestValidatorImpl requestValidator;
 
 
     @Test
@@ -32,8 +32,8 @@ public class TravelCalculatePremiumRequestValidatorTest {
     public void shouldReturnErrorsForNullFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
 
-        when(validations.getFirst().executeValidation(request)).thenReturn(Optional.of(new ValidationError()));
-        when(validations.getLast().executeValidation(request)).thenReturn(Optional.of(new ValidationError()));
+        when(validations.getFirst().validation(request)).thenReturn(Optional.of(new ValidationError()));
+        when(validations.getLast().validation(request)).thenReturn(Optional.of(new ValidationError()));
 
         ReflectionTestUtils.setField(requestValidator, "travelValidations", validations);
         List<ValidationError> errors = requestValidator.validate(request);
@@ -46,8 +46,8 @@ public class TravelCalculatePremiumRequestValidatorTest {
     public void shouldReturnErrorsForFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
 
-        when(validations.getFirst().executeValidation(request)).thenReturn(Optional.empty());
-        when(validations.getLast().executeValidation(request)).thenReturn(Optional.empty());
+        when(validations.getFirst().validation(request)).thenReturn(Optional.empty());
+        when(validations.getLast().validation(request)).thenReturn(Optional.empty());
 
         ReflectionTestUtils.setField(requestValidator, "travelValidations", validations);
         List<ValidationError> errors = requestValidator.validate(request);

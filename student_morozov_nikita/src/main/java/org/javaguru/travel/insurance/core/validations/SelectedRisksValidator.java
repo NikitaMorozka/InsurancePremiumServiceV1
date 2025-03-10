@@ -2,6 +2,8 @@ package org.javaguru.travel.insurance.core.validations;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.javaguru.travel.insurance.core.repositories.ClassifierValueRepository;
+import org.javaguru.travel.insurance.core.util.Placeholder;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
@@ -9,20 +11,44 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
-public class SelectedRisksValidator implements Validation {
+public class SelectedRisksValidator extends ValidationImpl {
 
+    private final ClassifierValueRepository classifierValueRepository;
     private final ErrorValidationFactory errorsHandler;
 
     @Override
-    public Optional<ValidationError> executeValidation(TravelCalculatePremiumRequest request) {
-        List<String> risks = request.getSelectedRisks();
+    public List<ValidationError> validationList(TravelCalculatePremiumRequest request) {
+        return request.getSelectedRisks() != null
+                ? validateSelectedRisks(request)
+                : List.of();
+    }
 
-        return (risks == null || risks.isEmpty() || risks.stream().allMatch(Objects::isNull))
-                ? Optional.of(errorsHandler.processing("ERROR_CODE_7"))
+    private List<ValidationError> validateSelectedRisks(TravelCalculatePremiumRequest request) {
+        return request.getSelectedRisks().stream()
+                .map(this::validateRiskIc)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
+    private Optional<ValidationError> validateRiskIc(String riskIc) {
+        return !existInDatabase(riskIc)
+                ? Optional.of(buildValidationError(riskIc))
                 : Optional.empty();
     }
+
+    private ValidationError buildValidationError(String riskIc) {
+        Placeholder placeholder = new Placeholder("NOT_EXISTING_RISK_TYPE", riskIc);
+        return errorsHandler.processing("ERROR_CODE_8", List.of(placeholder));
+    }
+
+    private boolean existInDatabase(String riskIc) {
+        return classifierValueRepository.findByClassifierTitleAndIc("RISK_TYPE", riskIc).isPresent();
+    }
+
 }

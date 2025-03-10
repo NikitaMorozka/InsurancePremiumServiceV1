@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateToCompareDateFromValidator implements Validation {
-//    private final ErrorsConf errorsConf;
+class DateToCompareDateFromValidator extends ValidationImpl {
+
     private final ErrorValidationFactory errorsHandler;
 
     @Override
-    public Optional<ValidationError> executeValidation(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
         LocalDate dateFrom = request.getAgreementDateFrom();
         LocalDate dateTo = request.getAgreementDateTo();
         if (dateFrom != null && dateTo != null) {
@@ -26,5 +26,4 @@ class DateToCompareDateFromValidator implements Validation {
         }
         return Optional.empty();
     }
-
 }
