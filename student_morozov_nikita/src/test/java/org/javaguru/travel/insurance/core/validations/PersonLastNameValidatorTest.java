@@ -29,7 +29,7 @@ class PersonLastNameValidatorTest {
     void shouldNotReturnErrorWhenPersonLastNameIsProvided() {
         when(request.getPersonLastName()).thenReturn("Name");
 
-        Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
+        Optional<ValidationError> validateErrors = personLastNameValidator.validationOptional(request);
 
         assertTrue(validateErrors.isEmpty());
     }
@@ -40,7 +40,7 @@ class PersonLastNameValidatorTest {
         when(request.getPersonLastName()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_2")).thenReturn(new ValidationError("ERROR_CODE_2","Field personLastName is empty!"));
 
-        Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
+        Optional<ValidationError> validateErrors = personLastNameValidator.validationOptional(request);
 
         assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
         assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());
@@ -53,7 +53,7 @@ class PersonLastNameValidatorTest {
         when(request.getPersonLastName()).thenReturn("");
         when(errorsHandler.processing("ERROR_CODE_2")).thenReturn(new ValidationError("ERROR_CODE_2","Field personLastName is empty!"));
 
-        Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
+        Optional<ValidationError> validateErrors = personLastNameValidator.validationOptional(request);
 
         assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
         assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());

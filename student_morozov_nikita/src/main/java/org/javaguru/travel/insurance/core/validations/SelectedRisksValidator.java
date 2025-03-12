@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
-public class SelectedRisksValidator extends ValidationImpl {
+public class SelectedRisksValidator implements ListValidation {
 
     private final ClassifierValueRepository classifierValueRepository;
     private final ErrorValidationFactory errorsHandler;

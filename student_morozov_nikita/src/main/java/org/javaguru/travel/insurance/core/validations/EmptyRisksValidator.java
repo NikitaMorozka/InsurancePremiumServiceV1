@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class EmptyRisksValidator extends ValidationImpl {
+public class EmptyRisksValidator implements OptionalValidation {
     private final ErrorValidationFactory errorsHandler;
 
 
     @Override
-    public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
         List<String> risks = request.getSelectedRisks();
 
         boolean hasEmptyRisk = risks.stream().anyMatch(risk -> risk == null || risk.trim().isEmpty());

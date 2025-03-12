@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateAfterNowValidator extends ValidationImpl {
+class DateAfterNowValidator implements OptionalValidation {
     private final ErrorValidationFactory errorsHandler;
 
     private LocalDate getCurrentDate() {
@@ -22,7 +22,7 @@ class DateAfterNowValidator extends ValidationImpl {
     }
 
     @Override
-    public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
         return check(request.getAgreementDateFrom(), request.getAgreementDateTo())
                 ? Optional.of(errorsHandler.processing("ERROR_CODE_6"))
                 : Optional.empty();

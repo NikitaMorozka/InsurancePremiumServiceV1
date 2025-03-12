@@ -16,7 +16,9 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TravelCalculatePremiumRequestValidatorImpl implements TravelCalculatePremiumRequestValidator {
 
-    private final List<Validation> travelValidations;
+    private final List<OptionalValidation> travelOptionalValidations;
+    private final List<ListValidation> travelListValidations;
+
 
     @Override
     public List<ValidationError> validate(TravelCalculatePremiumRequest request) {
@@ -26,15 +28,15 @@ class TravelCalculatePremiumRequestValidatorImpl implements TravelCalculatePremi
     }
 
     private List<ValidationError> collectSingleErrors(TravelCalculatePremiumRequest request) {
-        return travelValidations.stream()
-                .map(validation -> validation.validation(request))
+        return travelOptionalValidations.stream()
+                .map(validation -> validation.validationOptional(request))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
     }
 
     private List<ValidationError> collectListErrors(TravelCalculatePremiumRequest request) {
-        return travelValidations.stream()
+        return travelListValidations.stream()
                 .map(validation -> validation.validationList(request))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)

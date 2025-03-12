@@ -29,7 +29,7 @@ class DateFromValidatorTest {
     void shouldNotReturnErrorForValidDateFrom() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2025, 1, 1));
 
-        Optional<ValidationError> validationError = dateFromValidator.validation(request);
+        Optional<ValidationError> validationError = dateFromValidator.validationOptional(request);
 
         assertFalse(validationError.isPresent());
     }
@@ -40,7 +40,7 @@ class DateFromValidatorTest {
         when(request.getAgreementDateFrom()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_3")).thenReturn(new ValidationError("ERROR_CODE_3","DateFrom must not be null!"));
 
-        Optional<ValidationError> validationError = dateFromValidator.validation(request);
+        Optional<ValidationError> validationError = dateFromValidator.validationOptional(request);
 
         assertTrue(validationError.isPresent());
         assertEquals("ERROR_CODE_3", validationError.get().getErrorCode());

@@ -31,7 +31,7 @@ class DateToCompareDateFromValidatorTest {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.of(2023, 5, 11));
         when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2023, 6, 11));
 
-        Optional<ValidationError> validationError = dateToCompareDateFromValidator.validation(request);
+        Optional<ValidationError> validationError = dateToCompareDateFromValidator.validationOptional(request);
 
         assertTrue(validationError.isEmpty());
     }
@@ -43,7 +43,7 @@ class DateToCompareDateFromValidatorTest {
         when(request.getAgreementDateTo()).thenReturn(LocalDate.of(2023, 5, 11));
         when(errorsHandler.processing("ERROR_CODE_5")).thenReturn(new ValidationError("ERROR_CODE_5", "DateTo must not be less DateFrom!"));
 
-        Optional<ValidationError> validationError = dateToCompareDateFromValidator.validation(request);
+        Optional<ValidationError> validationError = dateToCompareDateFromValidator.validationOptional(request);
 
         assertTrue(validationError.isPresent());
         assertEquals("ERROR_CODE_5", validationError.get().getErrorCode());

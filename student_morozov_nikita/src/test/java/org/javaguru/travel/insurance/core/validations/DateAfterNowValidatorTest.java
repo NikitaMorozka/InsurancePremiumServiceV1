@@ -33,7 +33,7 @@ class DateAfterNowValidatorTest {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
 
-        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validation(request);
+        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validationOptional(request);
 
         assertTrue(validateDateAfterNow.isEmpty());
     }
@@ -45,7 +45,7 @@ class DateAfterNowValidatorTest {
         when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate());
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
 
-        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validation(request);
+        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validationOptional(request);
 
         assertTrue(validateDateAfterNow.isPresent());
         assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());
@@ -60,7 +60,7 @@ class DateAfterNowValidatorTest {
         when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().plusDays(1));
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
 
-        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validation(request);
+        Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validationOptional(request);
 
         assertTrue(validateDateAfterNow.isPresent());
         assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());

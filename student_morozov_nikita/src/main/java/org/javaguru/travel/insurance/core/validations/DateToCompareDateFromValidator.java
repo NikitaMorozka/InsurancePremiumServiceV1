@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateToCompareDateFromValidator extends ValidationImpl {
+class DateToCompareDateFromValidator implements OptionalValidation {
 
     private final ErrorValidationFactory errorsHandler;
 
     @Override
-    public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
         return check(request.getAgreementDateFrom(),request.getAgreementDateTo())
                 ? Optional.of(errorsHandler.processing("ERROR_CODE_5"))
                 : Optional.empty();

@@ -31,7 +31,7 @@ class EmptyRisksValidatorTest {
         when(request.getSelectedRisks()).thenReturn(List.of());
         when(errorsHandler.processing("ERROR_CODE_7")).thenReturn(new ValidationError("ERROR_CODE_7","Must not be empty!"));
 
-        Optional<ValidationError> validationError = emptyRisksValidatorTest.validation(request);
+        Optional<ValidationError> validationError = emptyRisksValidatorTest.validationOptional(request);
 
         assertEquals("ERROR_CODE_7", validationError.get().getErrorCode());
         assertEquals("Must not be empty!", validationError.get().getDescription());
@@ -42,7 +42,7 @@ class EmptyRisksValidatorTest {
     void shouldPassValidationWhenSelectedRisksAreProvided(){
         when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
 
-        Optional<ValidationError> validationError = emptyRisksValidatorTest.validation(request);
+        Optional<ValidationError> validationError = emptyRisksValidatorTest.validationOptional(request);
 
         assertTrue(validationError.isEmpty());
     }
@@ -53,7 +53,7 @@ class EmptyRisksValidatorTest {
         when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL","","TRAVEL_LOSS_BAGGAGE"));
         when(errorsHandler.processing("ERROR_CODE_7")).thenReturn(new ValidationError("ERROR_CODE_7","Must not be empty!"));
 
-        Optional<ValidationError> validationError = emptyRisksValidatorTest.validation(request);
+        Optional<ValidationError> validationError = emptyRisksValidatorTest.validationOptional(request);
 
         assertEquals("ERROR_CODE_7", validationError.get().getErrorCode());
         assertEquals("Must not be empty!", validationError.get().getDescription());
