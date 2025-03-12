@@ -8,7 +8,7 @@ import com.google.common.base.Stopwatch;
 
 @Component
 class EventLoggerTravelCalculatePremiumRequestExecutionTime implements EventLogger {
-    private static final Logger logger = LoggerFactory.getLogger(EventLoggerTravelCalculatePremiumRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventLoggerTravelCalculatePremiumRequestExecutionTime.class);
 
     @Override
     public void getLog(Object obj) {

@@ -16,23 +16,21 @@ import java.util.Optional;
 class DateAfterNowValidator extends ValidationImpl {
     private final ErrorValidationFactory errorsHandler;
 
-    private LocalDate getCurrentDate(){
+    private LocalDate getCurrentDate() {
         ZoneId zoneId = ZoneId.of("UTC");
         return ZonedDateTime.now(zoneId).toLocalDate();
     }
 
     @Override
     public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
-        LocalDate dateFrom = request.getAgreementDateFrom();
-        LocalDate dateTo = request.getAgreementDateTo();
-        LocalDate currentDate = getCurrentDate();
-
-        if (dateFrom != null && dateTo != null) {
-            if (dateTo.isBefore(currentDate) || dateFrom.isBefore(currentDate)) {
-                return Optional.of(errorsHandler.processing("ERROR_CODE_6"));
-            }
-        }
-        return Optional.empty();
+        return check(request.getAgreementDateFrom(), request.getAgreementDateTo())
+                ? Optional.of(errorsHandler.processing("ERROR_CODE_6"))
+                : Optional.empty();
     }
 
+    private boolean check(LocalDate dateFrom, LocalDate dateTo) {
+        LocalDate currentDate = getCurrentDate();
+        return (dateFrom != null && dateTo != null)
+                && (dateTo.isBefore(currentDate) || dateFrom.isBefore(currentDate));
+    }
 }

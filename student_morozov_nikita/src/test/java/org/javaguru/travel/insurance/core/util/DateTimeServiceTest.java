@@ -12,41 +12,41 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 
-public class DateTimeServiceTest {
+class DateTimeServiceTest {
 
     @InjectMocks
     DateTimeUtil dateTimeUtil;
 
     @Test
     @DisplayName("Тест: проверка на вывод положительного числа")
-    public void checkingPositiveNumber() {
+    void checkingPositiveNumber() {
         LocalDate testDateFromm = LocalDate.of(2025, 1, 11);
         LocalDate testDateToo = LocalDate.of(2025, 2, 11);
 
         long price = dateTimeUtil.calculateDaysDifference(testDateFromm, testDateToo);
 
-        assertEquals(price, 31L);
+        assertEquals(31L, price);
     }
 
     @Test
     @DisplayName("Тест: проверка на вывод нуля")
-    public void checkingNegativeNumber() {
+    void checkingNegativeNumber() {
         LocalDate testDateFromm = LocalDate.of(2025, 2, 11);
         LocalDate testDateToo = LocalDate.of(2025, 1, 11);
 
         long price = dateTimeUtil.calculateDaysDifference(testDateFromm, testDateToo);
 
-        assertEquals(price, -31L);
+        assertEquals(-31L, price);
     }
 
     @Test
     @DisplayName("Тест: проверка на вывод отрицательного числа")
-    public void checkingZeroNumber() {
+    void checkingZeroNumber() {
         LocalDate testDateFromm = LocalDate.of(2025, 1, 11);
         LocalDate testDateToo = LocalDate.of(2025, 1, 11);
 
         long price = dateTimeUtil.calculateDaysDifference(testDateFromm, testDateToo);
 
-        assertEquals(price, 0);
+        assertEquals(0, price );
     }
 }

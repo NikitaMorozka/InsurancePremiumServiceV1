@@ -1,13 +1,11 @@
 package org.javaguru.travel.insurance.core.repositories;
 
 import org.javaguru.travel.insurance.core.domain.ClassifierValue;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,13 +24,13 @@ class ClassifierValueRepositoryTest {
     private ClassifierValueRepository classifierValueRepository;
 
     @Test
-    public void injectedRepositoryAreNotNull() {
+    void injectedRepositoryAreNotNull() {
         assertNotNull(classifierValueRepository);
     }
 
     @ParameterizedTest
     @MethodSource("provideStringsForIsBlank")
-    public void shouldFindRiskTypes(String classifierTitle, String ic) {
+    void shouldFindRiskTypes(String classifierTitle, String ic) {
         Optional<ClassifierValue> valueOpt = classifierValueRepository.findByClassifierTitleAndIc(classifierTitle, ic);
 
         assertTrue(valueOpt.isPresent());
@@ -41,7 +39,7 @@ class ClassifierValueRepositoryTest {
     }
 
     @Test
-    public void shouldNotFind_RiskType_FAKE() {
+    void shouldNotFind_RiskType_FAKE() {
         Optional<ClassifierValue> valueOpt = classifierValueRepository.findByClassifierTitleAndIc("RISK_TYPE", "FAKE");
 
         assertTrue(valueOpt.isEmpty());

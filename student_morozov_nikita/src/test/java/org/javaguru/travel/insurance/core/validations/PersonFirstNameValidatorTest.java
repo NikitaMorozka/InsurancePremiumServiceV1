@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonFirstNameValidatorTest {
+class PersonFirstNameValidatorTest {
 
     @Mock private TravelCalculatePremiumRequest request;
     @Mock private ErrorValidationFactory errorsHandler;
@@ -27,7 +27,9 @@ public class PersonFirstNameValidatorTest {
     @DisplayName("Тест: поле должно быть заполнено")
     void shouldNotReturnErrorWhenPersonFirstNameIsProvided() {
         when(request.getPersonFirstName()).thenReturn("Name");
+
         Optional<ValidationError> validateErrors = personFirstNameValidator.validation(request);
+
         assertTrue(validateErrors.isEmpty());
     }
 
@@ -39,9 +41,9 @@ public class PersonFirstNameValidatorTest {
 
         Optional<ValidationError> validateErrors = personFirstNameValidator.validation(request);
 
-        assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_1");
-        assertEquals(validateErrors.get().getDescription(), "Field personFirstName is empty!");
-        assertFalse(validateErrors.isEmpty());
+        assertEquals("ERROR_CODE_1", validateErrors.get().getErrorCode());
+        assertEquals("Field personFirstName is empty!", validateErrors.get().getDescription() );
+        assertTrue(validateErrors.isPresent());
     }
 
     @Test
@@ -52,9 +54,9 @@ public class PersonFirstNameValidatorTest {
 
         Optional<ValidationError> validateErrors = personFirstNameValidator.validation(request);
 
-        assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_1");
-        assertEquals(validateErrors.get().getDescription(), "Field personFirstName is empty!");
-        assertFalse(validateErrors.isEmpty());
+        assertEquals("ERROR_CODE_1", validateErrors.get().getErrorCode());
+        assertEquals("Field personFirstName is empty!", validateErrors.get().getDescription());
+        assertTrue(validateErrors.isPresent());
     }
 
 }

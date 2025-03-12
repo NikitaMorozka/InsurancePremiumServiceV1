@@ -25,22 +25,22 @@ class ClassifierRepositoryTest {
 
     @Test
     @DisplayName("Test: Classifier table is present")
-    public void injectedRepositoryAreNotNull() {
+    void injectedRepositoryAreNotNull() {
         assertNotNull(classifierRepository);
     }
 
     @Test
     @DisplayName("Test: Can find record by Title")
-    public void shouldFindRiskTypeClassifier() {
+    void shouldFindRiskTypeClassifier() {
         Optional<Classifier> riskTypeOpt = classifierRepository.findByTitle("RISK_TYPE");
 
         assertTrue(riskTypeOpt.isPresent());
-        assertEquals(riskTypeOpt.get().getTitle(), "RISK_TYPE");
+        assertEquals("RISK_TYPE", riskTypeOpt.get().getTitle());
     }
 
     @Test
     @DisplayName("Test: Can't find record with Fake title")
-    public void shouldNotFindFakeClassifier() {
+    void shouldNotFindFakeClassifier() {
         Optional<Classifier> riskTypeOpt = classifierRepository.findByTitle("RISKS_TYPE");
 
         assertTrue(riskTypeOpt.isEmpty());

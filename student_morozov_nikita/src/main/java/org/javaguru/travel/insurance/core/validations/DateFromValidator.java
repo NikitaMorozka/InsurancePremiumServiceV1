@@ -11,7 +11,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class DateFromValidator extends ValidationImpl {
-//    private final ErrorsConf errorsConf;
     private final ErrorValidationFactory errorsHandler;
 
     @Override

@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -31,7 +30,7 @@ class TravelCalculatePremiumRequestValidatorImpl implements TravelCalculatePremi
                 .map(validation -> validation.validation(request))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<ValidationError> collectListErrors(TravelCalculatePremiumRequest request) {
@@ -39,13 +38,13 @@ class TravelCalculatePremiumRequestValidatorImpl implements TravelCalculatePremi
                 .map(validation -> validation.validationList(request))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<ValidationError> concatenateLists(List<ValidationError> singleErrors,
                                                    List<ValidationError> listErrors) {
         return Stream.concat(singleErrors.stream(), listErrors.stream())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

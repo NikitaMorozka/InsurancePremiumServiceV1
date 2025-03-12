@@ -1,54 +1,60 @@
 package org.javaguru.travel.insurance.core.underwriting;
 
-import org.javaguru.travel.insurance.core.util.DateTimeUtil;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CalculatePremiumUnderwritingTest {
+class CalculatePremiumUnderwritingTest {
 
-    @Mock
-    DateTimeUtil dateTimeUtil;
-    @Mock
-    private TravelCalculatePremiumRequest request;
+    @Mock private TravelPremium travelPremium1;
+    @Mock private TravelPremium travelPremium2;
+    @Mock private TravelCalculatePremiumRequest request;
+
     @InjectMocks
-    CalculatePremiumUnderwritingImpl calculatePremiumUnderwritingImpl;
+    private CalculatePremiumUnderwritingImpl calculatePremiumUnderwritingImpl;
 
-    @Test
-    @DisplayName("Тест: проверка на вывод положительного числа")
-    void checkingPositiveNumber() {
-        when(dateTimeUtil.calculateDaysDifference(request.getAgreementDateFrom(), request.getAgreementDateTo())).thenReturn(2L);
-        BigDecimal value = calculatePremiumUnderwritingImpl.calculateUnderwriting(request);
-
-        assertEquals(value, new BigDecimal(2L));
+    @BeforeEach
+    void setUp() {
+        var riskPremiumCalculators = List.of(travelPremium1, travelPremium2);
+        ReflectionTestUtils.setField(calculatePremiumUnderwritingImpl, "listRisks", riskPremiumCalculators); //кладем 2 риска
     }
 
     @Test
-    @DisplayName("Тест: проверка на вывод нуля")
-    void checkingNullNumber() {
-        when(dateTimeUtil.calculateDaysDifference(request.getAgreementDateFrom(), request.getAgreementDateTo())).thenReturn(0L);
-        BigDecimal value = calculatePremiumUnderwritingImpl.calculateUnderwriting(request);
+    void shouldCalculatePremiumForOneRisk() {
+        when(travelPremium1.getRiskIc()).thenReturn("TRAVEL_MEDICAL");
+        when(travelPremium1.calculatePremium(request)).thenReturn(BigDecimal.valueOf(2L));
+        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
 
-        assertEquals(value, new BigDecimal(0));
+        BigDecimal premium = calculatePremiumUnderwritingImpl.calculateUnderwriting(request).getPremium();
+
+        assertEquals(BigDecimal.valueOf(2L), premium);
     }
 
     @Test
-    @DisplayName("Тест: проверка на вывод отрицательного числа")
-    void checkingNegativeNumber() {
-        when(dateTimeUtil.calculateDaysDifference(request.getAgreementDateFrom(), request.getAgreementDateTo())).thenReturn(-2L);
-        BigDecimal value = calculatePremiumUnderwritingImpl.calculateUnderwriting(request);
+    void shouldCalculatePremiumForTwoRisk() {
+        when(travelPremium1.getRiskIc()).thenReturn("TRAVEL_MEDICAL");
+        when(travelPremium2.getRiskIc()).thenReturn("TRAVEL_EVACUATION");
+        when(travelPremium1.calculatePremium(request)).thenReturn(BigDecimal.valueOf(2L));
+        when(travelPremium2.calculatePremium(request)).thenReturn(BigDecimal.valueOf(2L));
+        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL", "TRAVEL_EVACUATION"));
 
-        assertEquals(value, BigDecimal.valueOf(-2L));
+        BigDecimal premium = calculatePremiumUnderwritingImpl.calculateUnderwriting(request).getPremium();
+
+        assertEquals(BigDecimal.valueOf(4L), premium);
     }
+
+
 }
+

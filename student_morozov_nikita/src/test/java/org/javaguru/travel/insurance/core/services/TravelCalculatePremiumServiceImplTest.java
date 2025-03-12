@@ -1,7 +1,7 @@
 package org.javaguru.travel.insurance.core.services;
 
 import org.javaguru.travel.insurance.core.underwriting.CalculatePremiumUnderwriting;
-import org.javaguru.travel.insurance.core.util.DateTimeUtil;
+import org.javaguru.travel.insurance.core.underwriting.ListRisks;
 import org.javaguru.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -13,8 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.text.ParseException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,77 +25,78 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class) // Подключаем расширение Mockito
 class TravelCalculatePremiumServiceImplTest {
 
-    @Mock
-    private CalculatePremiumUnderwriting premiumUnderwriting;
-    @Mock
-    private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
-    @Mock
-    private TravelCalculatePremiumRequest request;
+
+    @Mock private CalculatePremiumUnderwriting calculatePremiumUnderwriting;
+    @Mock  private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
+    @Mock private TravelCalculatePremiumRequest request;
+    @Mock private ListRisks listRisks;
 
     @InjectMocks
     private TravelCalculatePremiumServiceImpl calculate;// Внедряем моки в тестируемый класс
 
     @Test
     @DisplayName("Тест: совпадения поля PersonFirstName в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldFirstName() {
-        when(request.getPersonLastName()).thenReturn("PersonFirstName");
+    void shouldReturnResponseMatchingRequestFieldFirstName() {
+        when(request.getPersonFirstName()).thenReturn("PersonFirstName");
         when(requestValidator.validate(request)).thenReturn(List.of());
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
 
-        var response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
-        assertEquals(response.getPersonLastName(), "PersonFirstName");
+        assertEquals("PersonFirstName", response.getPersonFirstName());
     }
 
     @Test
     @DisplayName("Тест: совпадения поля PersonLastName в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldLastName() {
+    void shouldReturnResponseMatchingRequestFieldLastName() {
         when(request.getPersonLastName()).thenReturn("PersonLastName");
         when(requestValidator.validate(request)).thenReturn(List.of());
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
 
-        var response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
         assertEquals(request.getPersonFirstName(), response.getPersonFirstName());
     }
 
     @Test
     @DisplayName("Тест: совпадения поля DateFrom в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldDateFrom() {
+    void shouldReturnResponseMatchingRequestFieldDateFrom() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
 
-        var response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
         assertEquals(request.getAgreementDateFrom(), response.getAgreementDateFrom());
     }
 
     @Test
     @DisplayName("Тест: совпадения поля DateTo в запросе и ответе")
-    public void shouldReturnResponseMatchingRequestFieldDateTo() {
+    void shouldReturnResponseMatchingRequestFieldDateTo() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
 
-        var response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
         assertEquals(request.getAgreementDateTo(), response.getAgreementDateTo());
     }
 
     @Test
-    @DisplayName("Тест: наличия AgreementPrice в ответе")
-    public void shouldReturnDifferenceDays() throws ParseException {
-        when(request.getPersonFirstName()).thenReturn("Name");
-        when(request.getPersonLastName()).thenReturn("LastName");
-        when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
-        when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
+    @DisplayName("Тест: наличия AgreementPremium в ответе")
+    void shouldReturnDifferenceDays() {
+        when(request.getAgreementDateFrom()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate());
+        when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().plusDays(1));
         when(requestValidator.validate(request)).thenReturn(List.of());
-
+        when(listRisks.getPremium()).thenReturn(new BigDecimal(10L));
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
-
-        assertNotNull(response);
+        assertEquals(new BigDecimal(10L), response.getAgreementPremium());
     }
 
     @Test
     @DisplayName("Тест: наличия ошибок в ответе при валидации запроса")
-    public void shouldReturnResponseWithErrors() {
+    void shouldReturnResponseWithErrors() {
         var validationError = new ValidationError("field", "message");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
         var response = calculate.calculatePremium(request);
@@ -103,7 +106,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Test
     @DisplayName("Тест: количества ошибок в ответе")
-    public void shouldReturnResponseWithCountErrors() {
+    void shouldReturnResponseWithCountErrors() {
         List<ValidationError> validationErrors = List.of(
                 new ValidationError("field1", "message1"),
                 new ValidationError("field2", "message2")
@@ -112,25 +115,23 @@ class TravelCalculatePremiumServiceImplTest {
         when(requestValidator.validate(request)).thenReturn(validationErrors);
         var response = calculate.calculatePremium(request);
 
-        assertEquals(response.getErrors().size(), 2);
+        assertEquals(2, response.getErrors().size());
     }
 
     @Test
     @DisplayName("Тест: на передачу полей из объекта validationErrors")
-    public void shouldReturnResponseEqualsErrors() {
+    void shouldReturnResponseEqualsErrors() {
         var validationErrors = new ValidationError("field1", "message1");
         when(requestValidator.validate(request)).thenReturn(List.of(validationErrors));
         var response = calculate.calculatePremium(request);
-
-        assertEquals(response.getErrors().getFirst().getErrorCode(), "field1");
-        assertEquals(response.getErrors().getFirst().getDescription(), "message1");
+        assertEquals( "field1", response.getErrors().getFirst().getErrorCode());
+        assertEquals( "message1", response.getErrors().getFirst().getDescription());
         assertNull(response.getPersonFirstName());
     }
 
     @Test
     @DisplayName("Тест: пустых полей, и вызова конструктора с ошибками")
-    public void allFieldsMustBeEmptyWhenResponseContainsError() {
-        var request = new TravelCalculatePremiumRequest();
+    void allFieldsMustBeEmptyWhenResponseContainsError() {
         var validationError = new ValidationError("field", "message");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
         var response = calculate.calculatePremium(request);
@@ -138,7 +139,7 @@ class TravelCalculatePremiumServiceImplTest {
         assertNull(response.getPersonLastName());
         assertNull(response.getAgreementDateFrom());
         assertNull(response.getAgreementDateTo());
-        assertNull(response.getAgreementPrice());
+        assertNull(response.getAgreementPremium());
         assertNotNull(response.getErrors().getFirst().getErrorCode());
         assertNotNull(response.getErrors().getFirst().getDescription());
     }

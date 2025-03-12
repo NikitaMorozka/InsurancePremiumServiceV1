@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DateFromValidatorTest {
+class DateFromValidatorTest {
 
     @Mock private TravelCalculatePremiumRequest request;
     @Mock private ErrorValidationFactory errorsHandler;
@@ -43,8 +43,8 @@ public class DateFromValidatorTest {
         Optional<ValidationError> validationError = dateFromValidator.validation(request);
 
         assertTrue(validationError.isPresent());
-        assertEquals(validationError.get().getErrorCode(), "ERROR_CODE_3");
-        assertEquals(validationError.get().getDescription(), "DateFrom must not be null!");
+        assertEquals("ERROR_CODE_3", validationError.get().getErrorCode());
+        assertEquals("DateFrom must not be null!", validationError.get().getDescription());
     }
 
 }

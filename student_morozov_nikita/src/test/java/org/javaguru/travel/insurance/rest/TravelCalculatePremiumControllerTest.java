@@ -1,7 +1,5 @@
 package org.javaguru.travel.insurance.rest;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,22 +12,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class) // запуск спринг теста
 
-public class TravelCalculatePremiumControllerTest {
+class TravelCalculatePremiumControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,7 +31,7 @@ public class TravelCalculatePremiumControllerTest {
 
     @ParameterizedTest
     @MethodSource({"jsonRequestResponseFiles"})
-    public void сontrollerTest(String jsonRequest, String jsonResponse) throws Exception {
+    void controllerTest(String jsonRequest, String jsonResponse) throws Exception {
         StringBuilder filesPathRequest = new StringBuilder("src/test/resources/rest/request/");
         StringBuilder filesPathResponse = new StringBuilder("src/test/resources/rest/response/");
 
@@ -50,7 +43,8 @@ public class TravelCalculatePremiumControllerTest {
                 .andReturn();
     }
 
-    private static Stream<Arguments> jsonRequestResponseFiles() {
+     static Stream<Arguments> jsonRequestResponseFiles() {
+
         return Stream.of(
                 Arguments.of("request1.json", "response1.json"),
                 Arguments.of("request2.json", "response2.json"),

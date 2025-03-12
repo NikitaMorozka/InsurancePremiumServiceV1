@@ -12,7 +12,6 @@ import java.util.Optional;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class PersonLastNameValidator extends ValidationImpl {
 
-//    private final ErrorsConf errorsConf;
     private final ErrorValidationFactory errorsHandler;
     @Override
     public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {

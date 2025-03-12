@@ -17,13 +17,14 @@ class DateToCompareDateFromValidator extends ValidationImpl {
 
     @Override
     public Optional<ValidationError> validation(TravelCalculatePremiumRequest request) {
-        LocalDate dateFrom = request.getAgreementDateFrom();
-        LocalDate dateTo = request.getAgreementDateTo();
-        if (dateFrom != null && dateTo != null) {
-            if (dateTo.equals(dateFrom) || dateFrom.isAfter(dateTo)) {
-                return Optional.of(errorsHandler.processing("ERROR_CODE_5"));
-            }
-        }
-        return Optional.empty();
+        return check(request.getAgreementDateFrom(),request.getAgreementDateTo())
+                ? Optional.of(errorsHandler.processing("ERROR_CODE_5"))
+                : Optional.empty();
+
+    }
+
+    private boolean check(LocalDate dateFrom, LocalDate dateTo) {
+        return (dateFrom != null && dateTo != null)
+                && (dateTo.equals(dateFrom) || dateFrom.isAfter(dateTo));
     }
 }

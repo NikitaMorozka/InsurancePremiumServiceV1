@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DateAfterNowValidatorTest {
+class DateAfterNowValidatorTest {
 
     @Mock private TravelCalculatePremiumRequest request;//подменяемый объект
     @Mock private ErrorValidationFactory errorsHandler;
@@ -27,7 +29,7 @@ public class DateAfterNowValidatorTest {
 
     @Test
     @DisplayName("Тест: дата начала соглашения должна быть в будущем")
-    public void shouldNotReturnErrorForValidDateRange() {
+    void shouldNotReturnErrorForValidDateRange() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
 
@@ -38,31 +40,31 @@ public class DateAfterNowValidatorTest {
 
     @Test
     @DisplayName("Тест: дата начала соглашения не может быть в прошлом")
-    public void shouldReturnErrorForPastAgreementDateFrom() {
-        when(request.getAgreementDateFrom()).thenReturn(LocalDate.now().minusDays(1));
-        when(request.getAgreementDateTo()).thenReturn(LocalDate.now().plusDays(1));
+    void shouldReturnErrorForPastAgreementDateFrom() {
+        when(request.getAgreementDateFrom()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().minusDays(1));
+        when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate());
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
 
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validation(request);
 
         assertTrue(validateDateAfterNow.isPresent());
-        assertEquals(validateDateAfterNow.get().getErrorCode(), "ERROR_CODE_6");
-        assertEquals(validateDateAfterNow.get().getDescription(), "Both DateFrom and DateTo must be in the future!");
+        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());
+        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().getDescription());
 
     }
 
     @Test
     @DisplayName("Тест: обе даты должны быть в будущем")
-    public void shouldReturnErrorForNonFutureAgreementDates() {
-        when(request.getAgreementDateFrom()).thenReturn(LocalDate.now().minusDays(1));
-        when(request.getAgreementDateTo()).thenReturn(LocalDate.now().minusDays(1));
+    void shouldReturnErrorForNonFutureAgreementDates() {
+        when(request.getAgreementDateFrom()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().minusDays(1));
+        when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().plusDays(1));
         when(errorsHandler.processing("ERROR_CODE_6")).thenReturn(new ValidationError("ERROR_CODE_6","Both DateFrom and DateTo must be in the future!"));
 
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validation(request);
 
         assertTrue(validateDateAfterNow.isPresent());
-        assertEquals(validateDateAfterNow.get().getErrorCode(), "ERROR_CODE_6");
-        assertEquals(validateDateAfterNow.get().getDescription(), "Both DateFrom and DateTo must be in the future!");
+        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());
+        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().getDescription());
     }
 
 }

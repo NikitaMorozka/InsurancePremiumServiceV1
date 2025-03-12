@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DateToCompareDateFromValidatorTest {
+class DateToCompareDateFromValidatorTest {
 
     @Mock private TravelCalculatePremiumRequest request;
     @Mock private ErrorValidationFactory errorsHandler;
@@ -46,8 +46,8 @@ public class DateToCompareDateFromValidatorTest {
         Optional<ValidationError> validationError = dateToCompareDateFromValidator.validation(request);
 
         assertTrue(validationError.isPresent());
-        assertEquals(validationError.get().getErrorCode(), "ERROR_CODE_5");
-        assertEquals(validationError.get().getDescription(), "DateTo must not be less DateFrom!");
+        assertEquals("ERROR_CODE_5", validationError.get().getErrorCode());
+        assertEquals("DateTo must not be less DateFrom!", validationError.get().getDescription());
     }
 
 }

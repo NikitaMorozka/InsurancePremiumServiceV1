@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 
 
-public class PersonLastNameValidatorTest {
+class PersonLastNameValidatorTest {
 
     @Mock private TravelCalculatePremiumRequest request;
     @Mock private ErrorValidationFactory errorsHandler;
@@ -28,7 +28,9 @@ public class PersonLastNameValidatorTest {
     @DisplayName("Тест: поле должно быть заполнено")
     void shouldNotReturnErrorWhenPersonLastNameIsProvided() {
         when(request.getPersonLastName()).thenReturn("Name");
+
         Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
+
         assertTrue(validateErrors.isEmpty());
     }
 
@@ -37,10 +39,12 @@ public class PersonLastNameValidatorTest {
     void shouldReturnErrorWhenPersonLastNameIsNull() {
         when(request.getPersonLastName()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_2")).thenReturn(new ValidationError("ERROR_CODE_2","Field personLastName is empty!"));
+
         Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
-        assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_2");
-        assertEquals(validateErrors.get().getDescription(), "Field personLastName is empty!");
-        assertFalse(validateErrors.isEmpty());
+
+        assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
+        assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());
+        assertTrue(validateErrors.isPresent());
     }
 
     @Test
@@ -51,9 +55,9 @@ public class PersonLastNameValidatorTest {
 
         Optional<ValidationError> validateErrors = personLastNameValidator.validation(request);
 
-        assertEquals(validateErrors.get().getErrorCode(), "ERROR_CODE_2");
-        assertEquals(validateErrors.get().getDescription(), "Field personLastName is empty!");
-        assertFalse(validateErrors.isEmpty());
+        assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
+        assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());
+        assertTrue(validateErrors.isPresent());
     }
 
 }

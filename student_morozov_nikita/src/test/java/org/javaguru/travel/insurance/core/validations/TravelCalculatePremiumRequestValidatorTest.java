@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class) // Подключаем расширение Mockito
-public class TravelCalculatePremiumRequestValidatorTest {
+class TravelCalculatePremiumRequestValidatorTest {
 
     @Mock
     TravelCalculatePremiumRequest request;
@@ -29,7 +29,7 @@ public class TravelCalculatePremiumRequestValidatorTest {
 
     @Test
     @DisplayName("Тест: 2 ошибки валидации")
-    public void shouldReturnErrorsForNullFields(){
+    void shouldReturnErrorsForNullFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
 
         when(validations.getFirst().validation(request)).thenReturn(Optional.of(new ValidationError()));
@@ -38,12 +38,12 @@ public class TravelCalculatePremiumRequestValidatorTest {
         ReflectionTestUtils.setField(requestValidator, "travelValidations", validations);
         List<ValidationError> errors = requestValidator.validate(request);
 
-        assertEquals(errors.size(), 2);
+        assertEquals(2, errors.size());
     }
 
     @Test
     @DisplayName("Тест: Ошибок валидации нет")
-    public void shouldReturnErrorsForFields(){
+    void shouldReturnErrorsForFields(){
         List<Validation> validations = Arrays.asList(mock(Validation.class), mock(Validation.class));
 
         when(validations.getFirst().validation(request)).thenReturn(Optional.empty());
