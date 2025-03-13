@@ -34,7 +34,6 @@ class TravelCalculatePremiumControllerTest {
     void controllerTest(String jsonRequest, String jsonResponse) throws Exception {
         StringBuilder filesPathRequest = new StringBuilder("src/test/resources/rest/request/");
         StringBuilder filesPathResponse = new StringBuilder("src/test/resources/rest/response/");
-
         mockMvc.perform(post("/insurance/travel/")
                         .content(jsonFileReader.readJsonFromFile(filesPathRequest.append(jsonRequest).toString()))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
