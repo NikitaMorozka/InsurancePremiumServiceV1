@@ -3,7 +3,7 @@ package org.javaguru.travel.insurance.core.services;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.travel.insurance.core.underwriting.CalculatePremiumUnderwriting;
-import org.javaguru.travel.insurance.core.underwriting.ListRisks;
+import org.javaguru.travel.insurance.core.underwriting.TravelPremiumCalculationRisksResult;
 import org.javaguru.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -29,14 +29,15 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
 
     }
 
-    private TravelCalculatePremiumResponse getTravelCalculatePremiumResponse(TravelCalculatePremiumRequest request,  ListRisks calculateUnderwriting){
+    private TravelCalculatePremiumResponse getTravelCalculatePremiumResponse(TravelCalculatePremiumRequest request,  TravelPremiumCalculationRisksResult calculateUnderwriting){
         return new TravelCalculatePremiumResponse(
                 request.getPersonFirstName(),
                 request.getPersonLastName(),
                 request.getAgreementDateFrom(),
                 request.getAgreementDateTo(),
-                calculateUnderwriting.getPremium(),
-                calculateUnderwriting.getRisks()
+                request.getCountry(),
+                calculateUnderwriting.totalPremium(),
+                calculateUnderwriting.riskPremiums()
         );
     }
 }

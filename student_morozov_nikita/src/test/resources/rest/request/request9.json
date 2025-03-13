@@ -3,5 +3,6 @@
   "personLastName": "Doe",
   "agreementDateFrom": "2020-01-23",
   "agreementDateTo": "2020-04-23",
+  "country": "None",
   "selected_risks":["TRAMEDICAL", "", "TRAVEL_LOSS_BAE"]
 }

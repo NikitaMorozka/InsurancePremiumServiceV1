@@ -48,8 +48,8 @@ class DateAfterNowValidatorTest {
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validationOptional(request);
 
         assertTrue(validateDateAfterNow.isPresent());
-        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());
-        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().getDescription());
+        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().errorCode());
+        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().description());
 
     }
 
@@ -63,8 +63,8 @@ class DateAfterNowValidatorTest {
         Optional<ValidationError> validateDateAfterNow = dateAfterNowValidator.validationOptional(request);
 
         assertTrue(validateDateAfterNow.isPresent());
-        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().getErrorCode());
-        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().getDescription());
+        assertEquals("ERROR_CODE_6", validateDateAfterNow.get().errorCode());
+        assertEquals("Both DateFrom and DateTo must be in the future!", validateDateAfterNow.get().description());
     }
 
 }

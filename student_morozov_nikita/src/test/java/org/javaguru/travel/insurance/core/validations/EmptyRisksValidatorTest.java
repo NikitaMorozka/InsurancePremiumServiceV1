@@ -33,8 +33,8 @@ class EmptyRisksValidatorTest {
 
         Optional<ValidationError> validationError = emptyRisksValidatorTest.validationOptional(request);
 
-        assertEquals("ERROR_CODE_7", validationError.get().getErrorCode());
-        assertEquals("Must not be empty!", validationError.get().getDescription());
+        assertEquals("ERROR_CODE_7", validationError.get().errorCode());
+        assertEquals("Must not be empty!", validationError.get().description());
     }
 
     @Test
@@ -55,7 +55,7 @@ class EmptyRisksValidatorTest {
 
         Optional<ValidationError> validationError = emptyRisksValidatorTest.validationOptional(request);
 
-        assertEquals("ERROR_CODE_7", validationError.get().getErrorCode());
-        assertEquals("Must not be empty!", validationError.get().getDescription());
+        assertEquals("ERROR_CODE_7", validationError.get().errorCode());
+        assertEquals("Must not be empty!", validationError.get().description());
     }
 }

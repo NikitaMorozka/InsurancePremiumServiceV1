@@ -44,8 +44,8 @@ class DateToValidatorTest {
         Optional<ValidationError> validationError = dateToValidator.validationOptional(request);
 
         assertTrue(validationError.isPresent());
-        assertEquals("ERROR_CODE_4", validationError.get().getErrorCode());
-        assertEquals("DateTo must not be null!", validationError.get().getDescription());
+        assertEquals("ERROR_CODE_4", validationError.get().errorCode());
+        assertEquals("DateTo must not be null!", validationError.get().description());
     }
 
 }

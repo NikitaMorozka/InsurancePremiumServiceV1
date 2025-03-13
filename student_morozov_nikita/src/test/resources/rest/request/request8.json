@@ -3,5 +3,6 @@
   "personLastName": "Doe",
   "agreementDateFrom": "2020-01-23",
   "agreementDateTo": "2020-04-23",
+  "country": "LATVIA",
   "selected_risks":["TRAMEDICAL", "TRAVEL_CANCEL", "TRAVEL_LOSS_BAE"]
 }

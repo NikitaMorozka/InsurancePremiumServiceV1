@@ -1,6 +1,14 @@
 {
   "errors": [
     {
+      "errorCode": "ERROR_CODE_10",
+      "description": "Country not in DataBase"
+    },
+    {
+      "errorCode": "ERROR_CODE_9",
+      "description": "Country must not be null!"
+    },
+    {
       "errorCode": "ERROR_CODE_6",
       "description": "Both DateFrom and DateTo must be in the future!"
     },
@@ -25,6 +33,7 @@
   "personLastName": null,
   "agreementDateFrom": null,
   "agreementDateTo": null,
+  "country": null,
   "agreementPremium": null,
   "risks": null
 }

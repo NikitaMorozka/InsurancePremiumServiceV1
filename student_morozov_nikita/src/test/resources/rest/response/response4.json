@@ -1,6 +1,10 @@
 {
   "errors": [
     {
+      "errorCode": "ERROR_CODE_10",
+      "description": "Country not in DataBase"
+    },
+    {
       "errorCode": "ERROR_CODE_3",
       "description": "DateFrom must not be null!"
     }
@@ -9,6 +13,7 @@
   "personLastName": null,
   "agreementDateFrom": null,
   "agreementDateTo": null,
+  "country": null,
   "agreementPremium": null,
   "risks": null
 }

@@ -30,6 +30,4 @@ public class ClassifierValue {
     @Column(name = "description",nullable = false)
     private String description;
 
-
-
 }

@@ -4,19 +4,20 @@
   "personLastName": "Doe",
   "agreementDateFrom": "2028-01-23",
   "agreementDateTo": "2028-04-23",
-  "agreementPremium": 91,
+  "country": "JAPAN",
+  "agreementPremium": 318.5000,
   "risks": [
     {
       "riskIc": "TRAVEL_MEDICAL",
-      "premium": 91
+      "premium": 318.5000
     },
     {
       "riskIc": "TRAVEL_CANCELLATION",
-      "premium": 0
+      "premium": 0.0000
     },
     {
       "riskIc": "TRAVEL_LOSS_BAGGAGE",
-      "premium": 0
+      "premium": 0.0000
     }
   ]
 }

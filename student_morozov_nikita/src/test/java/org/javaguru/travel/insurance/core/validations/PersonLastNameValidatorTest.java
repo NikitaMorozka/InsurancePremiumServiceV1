@@ -42,8 +42,8 @@ class PersonLastNameValidatorTest {
 
         Optional<ValidationError> validateErrors = personLastNameValidator.validationOptional(request);
 
-        assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
-        assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());
+        assertEquals("ERROR_CODE_2", validateErrors.get().errorCode());
+        assertEquals("Field personLastName is empty!", validateErrors.get().description());
         assertTrue(validateErrors.isPresent());
     }
 
@@ -55,8 +55,8 @@ class PersonLastNameValidatorTest {
 
         Optional<ValidationError> validateErrors = personLastNameValidator.validationOptional(request);
 
-        assertEquals("ERROR_CODE_2", validateErrors.get().getErrorCode());
-        assertEquals("Field personLastName is empty!", validateErrors.get().getDescription());
+        assertEquals("ERROR_CODE_2", validateErrors.get().errorCode());
+        assertEquals("Field personLastName is empty!", validateErrors.get().description());
         assertTrue(validateErrors.isPresent());
     }
 

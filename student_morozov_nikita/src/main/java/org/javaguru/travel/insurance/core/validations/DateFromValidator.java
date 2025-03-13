@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateFromValidator implements OptionalValidation {
+class DateFromValidator implements ValidationOptional {
     private final ErrorValidationFactory errorsHandler;
 
 

@@ -1,73 +1,36 @@
-INSERT INTO classifiers(title, description)
+INSERT INTO classifiers (title, description)
 VALUES('RISK_TYPE', 'Risk type classifier');
 
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_MEDICAL',
-    'Travel policy medical risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
+-- Получаем id классификатора 'RISK_TYPE'
+SET @classifiers_id_risk_type = (SELECT id FROM classifiers WHERE title = 'RISK_TYPE');
 
+-- Вставляем значения для классификатора 'RISK_TYPE'
+INSERT INTO classifier_values(classifier_id, ic, description)
+VALUES
+    (@classifiers_id_risk_type, 'TRAVEL_MEDICAL', 'Medical expenses coverage.'),
+    (@classifiers_id_risk_type, 'TRAVEL_CANCELLATION', 'Trip cancellation coverage.'),
+    (@classifiers_id_risk_type, 'TRAVEL_LOSS_BAGGAGE', 'Lost baggage coverage.'),
+    (@classifiers_id_risk_type, 'TRAVEL_THIRD_PARTY_LIABILITY', 'Third-party liability coverage.'),
+    (@classifiers_id_risk_type, 'TRAVEL_EVACUATION', 'Emergency evacuation coverage.'),
+    (@classifiers_id_risk_type, 'TRAVEL_SPORT_ACTIVITIES', 'Sports activities coverage.');
 
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_CANCELLATION',
-    'Travel policy trip cancellation risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
+-- Вставляем классификатор 'COUNTRY'
+INSERT INTO classifiers (title, description)
+VALUES('COUNTRY', 'Country classifier');
 
+-- Получаем id классификатора 'COUNTRY'
+SET @classifiers_id_country = (SELECT id FROM classifiers WHERE title = 'COUNTRY');
 
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_LOSS_BAGGAGE',
-    'Travel policy baggage lose risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
+-- Вставляем значения для классификатора 'COUNTRY'
+INSERT INTO classifier_values(classifier_id, ic, description)
+VALUES
+    (@classifiers_id_country, 'LATVIA', 'Country Latvia.'),
+    (@classifiers_id_country, 'SPAIN', 'Country Spain.'),
+    (@classifiers_id_country, 'JAPAN', 'Country Japan.');
 
-
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_THIRD_PARTY_LIABILITY',
-    'Travel policy third party liability risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
-
-
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_EVACUATION',
-    'Travel policy evacuation risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
-
-
-INSERT INTO classifier_values(
-	classifier_id,
-    ic,
-    description)
-SELECT
-	cl.id,
-    'TRAVEL_SPORT_ACTIVITIES',
-    'Travel policy sport activities risk type'
- FROM classifiers as cl
- WHERE cl.title = 'RISK_TYPE';
+-- Вставляем ставки для стран
+INSERT INTO country_default_day_rate (country_ic, default_day_rate)
+VALUES
+    ('LATVIA', 1.00),
+    ('SPAIN', 2.50),
+    ('JAPAN', 3.50);

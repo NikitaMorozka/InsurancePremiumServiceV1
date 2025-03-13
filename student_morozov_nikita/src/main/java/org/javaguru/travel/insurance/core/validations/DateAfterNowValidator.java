@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class DateAfterNowValidator implements OptionalValidation {
+class DateAfterNowValidator implements ValidationOptional {
     private final ErrorValidationFactory errorsHandler;
 
     private LocalDate getCurrentDate() {

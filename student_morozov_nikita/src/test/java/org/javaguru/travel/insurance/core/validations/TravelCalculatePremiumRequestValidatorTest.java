@@ -29,8 +29,8 @@ class TravelCalculatePremiumRequestValidatorTest {
     @Test
     @DisplayName("Тест: 2 ошибки валидации")
     void shouldReturnErrorsForNullFields(){
-        List<ListValidation> validationsList = Arrays.asList(mock(ListValidation.class), mock(ListValidation.class));
-        List<OptionalValidation> validationsOptional = Arrays.asList(mock(OptionalValidation.class), mock(OptionalValidation.class));
+        List<ValidationList> validationsList = Arrays.asList(mock(ValidationList.class), mock(ValidationList.class));
+        List<ValidationOptional> validationsOptional = Arrays.asList(mock(ValidationOptional.class), mock(ValidationOptional.class));
 
         when(validationsList.getFirst().validationList(request)).thenReturn(List.of(new ValidationError()));
         when(validationsList.getLast().validationList(request)).thenReturn(List.of(new ValidationError()));
@@ -38,8 +38,8 @@ class TravelCalculatePremiumRequestValidatorTest {
         when(validationsOptional.getFirst().validationOptional(request)).thenReturn(Optional.of(new ValidationError()));
         when(validationsOptional.getLast().validationOptional(request)).thenReturn(Optional.of(new ValidationError()));
 
-        ReflectionTestUtils.setField(requestValidator, "travelListValidations", validationsList);
-        ReflectionTestUtils.setField(requestValidator, "travelOptionalValidations", validationsOptional);
+        ReflectionTestUtils.setField(requestValidator, "travelValidationLists", validationsList);
+        ReflectionTestUtils.setField(requestValidator, "travelValidationOptionals", validationsOptional);
 
         List<ValidationError> errors = requestValidator.validate(request);
 
@@ -49,14 +49,14 @@ class TravelCalculatePremiumRequestValidatorTest {
     @Test
     @DisplayName("Тест: Ошибок валидации нет")
     void shouldReturnErrorsForFields(){
-        List<ListValidation> validationsList = Arrays.asList(mock(ListValidation.class));
-        List<OptionalValidation> validationsOptional = Arrays.asList(mock(OptionalValidation.class));
+        List<ValidationList> validationsList = Arrays.asList(mock(ValidationList.class));
+        List<ValidationOptional> validationsOptional = Arrays.asList(mock(ValidationOptional.class));
 
         when(validationsList.getFirst().validationList(request)).thenReturn(List.of());
         when(validationsOptional.getLast().validationOptional(request)).thenReturn(Optional.empty());
 
-        ReflectionTestUtils.setField(requestValidator, "travelListValidations", validationsList);
-        ReflectionTestUtils.setField(requestValidator, "travelOptionalValidations", validationsOptional);
+        ReflectionTestUtils.setField(requestValidator, "travelValidationLists", validationsList);
+        ReflectionTestUtils.setField(requestValidator, "travelValidationOptionals", validationsOptional);
 
         List<ValidationError> errors = requestValidator.validate(request);
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class EmptyRisksValidator implements OptionalValidation {
+public class EmptyRisksValidator implements ValidationOptional {
     private final ErrorValidationFactory errorsHandler;
 
 

@@ -10,13 +10,22 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class PersonLastNameValidator implements ValidationOptional {
+
+class CountryNotNullValidator implements ValidationOptional{
     private final ErrorValidationFactory errorsHandler;
 
     @Override
     public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
-        return ((request.getPersonLastName() == null) || (request.getPersonLastName().isEmpty()))
-                ? Optional.of(errorsHandler.processing("ERROR_CODE_2"))
+        return checkingRequest(request)
+                ? Optional.of(errorsHandler.processing("ERROR_CODE_9"))
                 : Optional.empty();
     }
+
+    private boolean checkingRequest(TravelCalculatePremiumRequest checkingValue){
+        return checkingValue.getCountry() == null
+                || checkingValue.getCountry().isBlank()
+                || !checkingValue.getSelectedRisks().contains("TRAVEL_MEDICAL");
+    }
+
+
 }

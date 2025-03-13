@@ -46,8 +46,8 @@ class DateToCompareDateFromValidatorTest {
         Optional<ValidationError> validationError = dateToCompareDateFromValidator.validationOptional(request);
 
         assertTrue(validationError.isPresent());
-        assertEquals("ERROR_CODE_5", validationError.get().getErrorCode());
-        assertEquals("DateTo must not be less DateFrom!", validationError.get().getDescription());
+        assertEquals("ERROR_CODE_5", validationError.get().errorCode());
+        assertEquals("DateTo must not be less DateFrom!", validationError.get().description());
     }
 
 }

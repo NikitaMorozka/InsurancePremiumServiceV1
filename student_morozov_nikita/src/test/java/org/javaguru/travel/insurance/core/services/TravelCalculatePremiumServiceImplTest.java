@@ -1,7 +1,7 @@
 package org.javaguru.travel.insurance.core.services;
 
 import org.javaguru.travel.insurance.core.underwriting.CalculatePremiumUnderwriting;
-import org.javaguru.travel.insurance.core.underwriting.ListRisks;
+import org.javaguru.travel.insurance.core.underwriting.TravelPremiumCalculationRisksResult;
 import org.javaguru.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
@@ -29,7 +29,7 @@ class TravelCalculatePremiumServiceImplTest {
     @Mock private CalculatePremiumUnderwriting calculatePremiumUnderwriting;
     @Mock  private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
     @Mock private TravelCalculatePremiumRequest request;
-    @Mock private ListRisks listRisks;
+    @Mock private TravelPremiumCalculationRisksResult travelPremiumCalculationRisksResult;
 
     @InjectMocks
     private TravelCalculatePremiumServiceImpl calculate;// Внедряем моки в тестируемый класс
@@ -39,7 +39,7 @@ class TravelCalculatePremiumServiceImplTest {
     void shouldReturnResponseMatchingRequestFieldFirstName() {
         when(request.getPersonFirstName()).thenReturn("PersonFirstName");
         when(requestValidator.validate(request)).thenReturn(List.of());
-        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
@@ -51,7 +51,7 @@ class TravelCalculatePremiumServiceImplTest {
     void shouldReturnResponseMatchingRequestFieldLastName() {
         when(request.getPersonLastName()).thenReturn("PersonLastName");
         when(requestValidator.validate(request)).thenReturn(List.of());
-        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
@@ -63,7 +63,7 @@ class TravelCalculatePremiumServiceImplTest {
     void shouldReturnResponseMatchingRequestFieldDateFrom() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
-        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
@@ -75,7 +75,7 @@ class TravelCalculatePremiumServiceImplTest {
     void shouldReturnResponseMatchingRequestFieldDateTo() {
         when(request.getAgreementDateFrom()).thenReturn(LocalDate.now());
         when(requestValidator.validate(request)).thenReturn(List.of());
-        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
 
@@ -88,9 +88,11 @@ class TravelCalculatePremiumServiceImplTest {
         when(request.getAgreementDateFrom()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate());
         when(request.getAgreementDateTo()).thenReturn(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDate().plusDays(1));
         when(requestValidator.validate(request)).thenReturn(List.of());
-        when(listRisks.getPremium()).thenReturn(new BigDecimal(10L));
-        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(listRisks);
+        when(travelPremiumCalculationRisksResult.totalPremium()).thenReturn(new BigDecimal(10L));
+        when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
+
         TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+
         assertEquals(new BigDecimal(10L), response.getAgreementPremium());
     }
 
@@ -113,6 +115,7 @@ class TravelCalculatePremiumServiceImplTest {
         );
 
         when(requestValidator.validate(request)).thenReturn(validationErrors);
+
         var response = calculate.calculatePremium(request);
 
         assertEquals(2, response.getErrors().size());
@@ -124,8 +127,9 @@ class TravelCalculatePremiumServiceImplTest {
         var validationErrors = new ValidationError("field1", "message1");
         when(requestValidator.validate(request)).thenReturn(List.of(validationErrors));
         var response = calculate.calculatePremium(request);
-        assertEquals( "field1", response.getErrors().getFirst().getErrorCode());
-        assertEquals( "message1", response.getErrors().getFirst().getDescription());
+
+        assertEquals( "field1", response.getErrors().getFirst().errorCode());
+        assertEquals( "message1", response.getErrors().getFirst().description());
         assertNull(response.getPersonFirstName());
     }
 
@@ -135,13 +139,14 @@ class TravelCalculatePremiumServiceImplTest {
         var validationError = new ValidationError("field", "message");
         when(requestValidator.validate(request)).thenReturn(List.of(validationError));
         var response = calculate.calculatePremium(request);
+
         assertNull(response.getPersonFirstName());
         assertNull(response.getPersonLastName());
         assertNull(response.getAgreementDateFrom());
         assertNull(response.getAgreementDateTo());
         assertNull(response.getAgreementPremium());
-        assertNotNull(response.getErrors().getFirst().getErrorCode());
-        assertNotNull(response.getErrors().getFirst().getDescription());
+        assertNotNull(response.getErrors().getFirst().errorCode());
+        assertNotNull(response.getErrors().getFirst().description());
     }
 
 }
