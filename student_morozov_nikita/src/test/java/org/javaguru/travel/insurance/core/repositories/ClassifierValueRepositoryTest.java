@@ -41,7 +41,6 @@ class ClassifierValueRepositoryTest {
     @Test
     void shouldNotFind_RiskType_FAKE() {
         Optional<ClassifierValue> valueOpt = classifierValueRepository.findByClassifierTitleAndIc("RISK_TYPE", "FAKE");
-
         assertTrue(valueOpt.isEmpty());
     }
 

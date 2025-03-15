@@ -43,7 +43,6 @@ class TravelCalculatePremiumControllerTest {
     }
 
      static Stream<Arguments> jsonRequestResponseFiles() {
-
         return Stream.of(
                 Arguments.of("request1.json", "response1.json"),
                 Arguments.of("request2.json", "response2.json"),

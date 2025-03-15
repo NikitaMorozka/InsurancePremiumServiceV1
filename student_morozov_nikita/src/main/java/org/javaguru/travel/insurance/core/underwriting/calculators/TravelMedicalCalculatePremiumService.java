@@ -2,6 +2,7 @@ package org.javaguru.travel.insurance.core.underwriting.calculators;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.javaguru.travel.insurance.core.domain.CountryDefaultDayRate;
 import org.javaguru.travel.insurance.core.repositories.CountryDefaultDayRateRepository;
 import org.javaguru.travel.insurance.core.underwriting.TravelPremium;
 import org.javaguru.travel.insurance.core.util.DateTimeUtil;
@@ -27,6 +28,7 @@ class TravelMedicalCalculatePremiumService implements TravelPremium {
     }
     private BigDecimal findCountryDefaultDayRate(TravelCalculatePremiumRequest request){
         return countryDefaultDayRate.findDefaultDayRateByCountryIc(request.getCountry())
+                .map(CountryDefaultDayRate::getDefaultDayRate)
                 .orElseThrow(() ->
                         new RuntimeException("Country not found = " + request.getCountry()));
     }
