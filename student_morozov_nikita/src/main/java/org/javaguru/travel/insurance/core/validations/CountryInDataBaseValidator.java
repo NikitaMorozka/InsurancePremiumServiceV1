@@ -11,20 +11,30 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class CountInDataBaseValidator implements ValidationOptional {
+class CountryInDataBaseValidator implements ValidationOptional {
     private final ErrorValidationFactory errorsHandler;
     private final ClassifierValueRepository classifierValueRepository;
 
     @Override
     public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
-        return (checkingRequest(request) && request.getSelectedRisks() != null)
-                ? Optional.of(errorsHandler.processing("ERROR_CODE_10"))
-                : Optional.empty();
+        if (containsTravelMedical(request) && countryIsNullOrBlank(request)) {
+            return Optional.of(errorsHandler.processing("ERROR_CODE_10"));
+        }
+        return Optional.empty();
     }
 
-    private boolean checkingRequest(TravelCalculatePremiumRequest checkingValue) {
+    private boolean containsTravelMedical(TravelCalculatePremiumRequest request) {
+        return request.getSelectedRisks() != null
+                && request.getSelectedRisks().contains("TRAVEL_MEDICAL");
+    }
+
+    private boolean countryIsNullOrBlank(TravelCalculatePremiumRequest request) {
+        return request.getCountry() == null || request.getCountry().isBlank();
+    }
+
+    private boolean checkingRequest(TravelCalculatePremiumRequest request) {
         return classifierValueRepository
-                .findByClassifierTitleAndIc("COUNTRY", checkingValue.getCountry())
+                .findByClassifierTitleAndIc("COUNTRY", request.getCountry())
                 .isEmpty();
     }
 
