@@ -1,69 +1,58 @@
 package org.javaguru.travel.insurance.core.validations;
 
+import org.javaguru.travel.insurance.core.domain.CountryDefaultDayRate;
+import org.javaguru.travel.insurance.core.repositories.CountryDefaultDayRateRepository;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.ValidationError;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+
 @ExtendWith(MockitoExtension.class)
 class CountryInDataBaseValidatorTest {
+
+    @Mock CountryDefaultDayRateRepository countryDefaultDayRateRepository;
     @Mock ErrorValidationFactory errorsHandler;
     @Mock TravelCalculatePremiumRequest request;
 
-    @InjectMocks private CountryInDataBaseValidator validation;
+    @InjectMocks
+    CountryInDataBaseValidator countryInDataBaseValidator;
 
     @Test
-    void shouldReturnNoErrorWhenSelectedRisksIsNull() {
-        when(request.getSelectedRisks()).thenReturn(null);
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-        assertTrue(errorOpt.isEmpty());
+    @DisplayName("Тест: Страна нет в БД")
+    void shouldReturnErrorWhenCountryNotInRepository() {
+        when(request.getCountry()).thenReturn("NoNameCountry");
+        when(countryDefaultDayRateRepository.findDefaultDayRateByCountryIc("NoNameCountry"))
+                .thenReturn(Optional.empty());
+        when(errorsHandler.processing("ERROR_CODE_9"))
+                .thenReturn(new ValidationError("ERROR_CODE_9", "Country not in DataBase"));
+
+        Optional<ValidationError> result = countryInDataBaseValidator.validationOptional(request);
+
+        assertTrue(result.isPresent());
+        assertEquals("ERROR_CODE_9", result.get().errorCode());
+        assertEquals("Country not in DataBase", result.get().description());
     }
 
     @Test
-    void shouldReturnNoErrorWhenSelectedRisksNotContainsTravelMedical() {
-        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_EVACUATION"));
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-        assertTrue(errorOpt.isEmpty());
+    @DisplayName("Тест: Страна есть в БД")
+    void shouldNotReturnErrorWhenCountryFoundInRepository() {
+        when(request.getCountry()).thenReturn("JAPAN");
+        when(countryDefaultDayRateRepository.findDefaultDayRateByCountryIc("JAPAN")).thenReturn(Optional.of(new CountryDefaultDayRate()));
+
+        Optional<ValidationError> result = countryInDataBaseValidator.validationOptional(request);
+
+        assertTrue(result.isEmpty());
     }
 
-    @Test
-    void shouldReturnNoErrorWhenSelectedRisksContainsTravelMedicalAndCountryIsPresent() {
-        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
-        when(request.getCountry()).thenReturn("SPAIN");
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-        assertTrue(errorOpt.isEmpty());
-    }
-
-    @Test
-    void shouldReturnErrorWhenSelectedRisksContainsTravelMedicalAndCountryIsNull() {
-        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
-        when(request.getCountry()).thenReturn(null);
-        when(errorsHandler.processing("ERROR_CODE_10")).thenReturn(new ValidationError("ERROR_CODE_10", "Country not in DataBase"));
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-        assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_10", errorOpt.get().errorCode());
-        assertEquals("Country not in DataBase", errorOpt.get().description());
-    }
-
-    @Test
-    void shouldReturnErrorWhenSelectedRisksContainsTravelMedicalAndCountryIsEmpty() {
-        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
-        when(request.getCountry()).thenReturn("");
-        when(errorsHandler.processing("ERROR_CODE_10"))
-                .thenReturn(new ValidationError("ERROR_CODE_10", "Country not in DataBase"));
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-        assertTrue(errorOpt.isPresent());
-        assertEquals("ERROR_CODE_10", errorOpt.get().errorCode());
-        assertEquals("Country not in DataBase", errorOpt.get().description());
-    }
 }

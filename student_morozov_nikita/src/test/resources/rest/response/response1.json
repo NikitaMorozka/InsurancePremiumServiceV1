@@ -5,19 +5,19 @@
   "agreementDateFrom": "2028-01-23",
   "agreementDateTo": "2028-04-23",
   "country": "JAPAN",
-  "agreementPremium": 318.5000,
+  "agreementPremium": 318.50,
   "risks": [
     {
       "riskIc": "TRAVEL_MEDICAL",
-      "premium": 318.5000
+      "premium": 318.50
     },
     {
       "riskIc": "TRAVEL_CANCELLATION",
-      "premium": 0.0000
+      "premium": 0.00
     },
     {
       "riskIc": "TRAVEL_LOSS_BAGGAGE",
-      "premium": 0.0000
+      "premium": 0.00
     }
   ]
 }
