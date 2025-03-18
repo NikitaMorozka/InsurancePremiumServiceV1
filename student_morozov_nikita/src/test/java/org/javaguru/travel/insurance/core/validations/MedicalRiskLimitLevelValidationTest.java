@@ -1,5 +1,6 @@
 package org.javaguru.travel.insurance.core.validations;
 
+import org.javaguru.travel.insurance.core.domain.ClassifierValue;
 import org.javaguru.travel.insurance.core.repositories.ClassifierValueRepository;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.javaguru.travel.insurance.dto.ValidationError;
@@ -15,8 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MedicalRiskLimitLevelValidationTest {
@@ -25,6 +25,53 @@ class MedicalRiskLimitLevelValidationTest {
     @Mock TravelCalculatePremiumRequest request;
 
     @InjectMocks MedicalRiskLimitLevelValidation medicalRiskLimitLevelValidation;
+
+    @Test
+    void shouldNotReturnErrorWhenMedicalRiskLimitLevelNotEnabled() {
+        ReflectionTestUtils.setField(medicalRiskLimitLevelValidation, "medicalRiskLimitLevelEnabled", false);
+
+        Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
+
+        assertTrue(validationErrorOpt.isEmpty());
+        verifyNoInteractions(classifierValueRepository, errorValidationFactory);
+    }
+    @Test
+    void shouldNotReturnErrorWhenNotContainTravelMedicalRisk() {
+        ReflectionTestUtils.setField(medicalRiskLimitLevelValidation, "medicalRiskLimitLevelEnabled", true);
+
+        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_EVACUATION"));
+
+        Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
+        assertTrue(validationErrorOpt.isEmpty());
+        verifyNoInteractions(classifierValueRepository, errorValidationFactory);
+    }
+    @Test
+    void shouldNotReturnErrorWhenMedicalRiskLimitLevelIsNull() {
+        ReflectionTestUtils.setField(medicalRiskLimitLevelValidation, "medicalRiskLimitLevelEnabled", true);
+        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
+        when(request.getMedicalRiskLimitLevel()).thenReturn(null);
+
+        Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
+
+        assertTrue(validationErrorOpt.isEmpty());
+        verifyNoInteractions(classifierValueRepository, errorValidationFactory);
+    }
+    @Test
+     void shouldNotReturnErrorWhenMedicalRiskLimitLevelExistInDb() {
+        when(request.getMedicalRiskLimitLevel()).thenReturn("LEVEL_10000");
+        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_MEDICAL"));
+        ReflectionTestUtils.setField(medicalRiskLimitLevelValidation, "medicalRiskLimitLevelEnabled", true);
+        ClassifierValue classifierValue = mock(ClassifierValue.class);
+        when(classifierValueRepository.
+                findByClassifierTitleAndIc("MEDICAL_RISK_LIMIT_LEVEL", "LEVEL_10000"))
+                .thenReturn(Optional.of(classifierValue));
+
+        Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
+
+        assertTrue(validationErrorOpt.isEmpty());
+        verifyNoInteractions(errorValidationFactory);
+    }
+
     @Test
     void shouldReturnError() {
         when(request.getMedicalRiskLimitLevel()).thenReturn("LEVEL_10000");
@@ -33,42 +80,14 @@ class MedicalRiskLimitLevelValidationTest {
         when(classifierValueRepository.
                 findByClassifierTitleAndIc("MEDICAL_RISK_LIMIT_LEVEL", "LEVEL_10000"))
                 .thenReturn(Optional.empty());
-
         ValidationError validationError = mock(ValidationError.class);
         when(errorValidationFactory.processing("ERROR_CODE_13")).thenReturn(validationError);
+
         Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
+
         assertTrue(validationErrorOpt.isPresent());
         assertSame(validationError, validationErrorOpt.get());
     }
 
 }
 
-
-// @Value("${medical.risk.limit.level.enabled}")
-//    private Boolean medicalRiskLimitLevelEnabled;
-//    private final ClassifierValueRepository classifierValueRepository;
-//    private final ErrorValidationFactory errorsHandler;
-//
-//    @Override
-//    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
-//        return (medicalRiskLimitLevelEnabled
-//                && containsTravelMedical(request)
-//                && isMedicalRiskLimitLevelNotBlank(request))
-//                && !existInDatabase(request.getMedicalRiskLimitLevel())
-//                ? Optional.of(errorsHandler.processing("ERROR_CODE_13"))
-//                : Optional.empty();
-//    }
-//
-//    private boolean containsTravelMedical(TravelCalculatePremiumRequest request) {
-//        return request.getSelectedRisks() != null
-//                && request.getSelectedRisks().contains("TRAVEL_MEDICAL");
-//    }
-//
-//    private boolean isMedicalRiskLimitLevelNotBlank(TravelCalculatePremiumRequest request) {
-//        return request.getMedicalRiskLimitLevel() != null && !request.getMedicalRiskLimitLevel().isBlank();
-//    }
-//
-//    private boolean existInDatabase(String medicalRiscLimitLevelIc) {
-//        return classifierValueRepository
-//                .findByClassifierTitleAndIc("MEDICAL_RISK_LIMIT_LEVEL", medicalRiscLimitLevelIc).isPresent();
-//    }

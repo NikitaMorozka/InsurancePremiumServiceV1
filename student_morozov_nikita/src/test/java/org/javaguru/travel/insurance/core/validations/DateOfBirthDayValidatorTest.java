@@ -18,19 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DateOfBirthAfterNowValidatorTest {
+class DateOfBirthDayValidatorTest {
 
     @Mock private ErrorValidationFactory errorsHandler;
     @Mock private TravelCalculatePremiumRequest request;
 
-    @InjectMocks DateOfBirthAfterNowValidator dateOfBirthAfterNowValidator;
+    @InjectMocks
+    DateOfBirthDayValidator dateOfBirthDayValidator;
 
     @Test
     @DisplayName("Тест: Дата рождения раньше настоящего")
     void test1(){
         when(request.getDateOfBirth()).thenReturn(LocalDate.of(2012, 11 , 25));
 
-        Optional<ValidationError> validationError = dateOfBirthAfterNowValidator.validationOptional(request);
+        Optional<ValidationError> validationError = dateOfBirthDayValidator.validationOptional(request);
 
         assertTrue(validationError.isEmpty());
     }
@@ -41,7 +42,7 @@ class DateOfBirthAfterNowValidatorTest {
         when(request.getDateOfBirth()).thenReturn(null);
         when(errorsHandler.processing("ERROR_CODE_11")).thenReturn(new ValidationError("ERROR_CODE_11", "Date of Birth must not be null"));
 
-        Optional<ValidationError> validationError = dateOfBirthAfterNowValidator.validationOptional(request);
+        Optional<ValidationError> validationError = dateOfBirthDayValidator.validationOptional(request);
 
         assertEquals("ERROR_CODE_11", validationError.get().errorCode());
     }
@@ -49,10 +50,10 @@ class DateOfBirthAfterNowValidatorTest {
     @Test
     @DisplayName("Тест: Дата рождения позже настоящего")
     void test3(){
-        when(request.getDateOfBirth()).thenReturn(LocalDate.of(2028, 11 , 25));
+        when(request.getDateOfBirth()).thenReturn(LocalDate.now().plusDays(7));
         when(errorsHandler.processing("ERROR_CODE_12")).thenReturn(new ValidationError("ERROR_CODE_12", "Date of birth must not be in the future!"));
 
-        Optional<ValidationError> validationError = dateOfBirthAfterNowValidator.validationOptional(request);
+        Optional<ValidationError> validationError = dateOfBirthDayValidator.validationOptional(request);
 
         assertEquals("ERROR_CODE_12", validationError.get().errorCode());
     }
