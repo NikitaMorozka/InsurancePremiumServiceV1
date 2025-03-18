@@ -52,7 +52,10 @@ class TravelCalculatePremiumControllerTest {
                 Arguments.of("request6.json", "response6.json"),
                 Arguments.of("request7.json", "response7.json"),
                 Arguments.of("request8.json", "response8.json"),
-                Arguments.of("request9.json", "response9.json")
+                Arguments.of("request9.json", "response9.json"),
+                Arguments.of("request10.json", "response10.json"),
+                Arguments.of("request11.json", "response11.json"),
+                Arguments.of("request12.json", "response12.json")
         );
     }
 

@@ -1,8 +1,12 @@
 {
   "errors": [
     {
-      "errorCode": "ERROR_CODE_5",
-      "description": "DateTo must not be less DateFrom!"
+      "errorCode": "ERROR_CODE_12",
+      "description": "Date of birth must not be in the future!"
+    },
+    {
+      "errorCode": "ERROR_CODE_13",
+      "description": "MedicalRiskLimitLevel value not supported!"
     }
   ],
   "personFirstName": null,

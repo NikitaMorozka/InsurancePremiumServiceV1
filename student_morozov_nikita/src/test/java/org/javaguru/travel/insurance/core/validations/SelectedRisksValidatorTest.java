@@ -33,6 +33,7 @@ class SelectedRisksValidatorTest {
         when(request.getSelectedRisks()).thenReturn(null);
 
         assertTrue(selectedRisksValidator.validationList(request).isEmpty());
+
         verifyNoInteractions(classifierValueRepository, errorsHandler);
     }
 

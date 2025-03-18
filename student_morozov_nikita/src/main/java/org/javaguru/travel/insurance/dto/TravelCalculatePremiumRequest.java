@@ -16,8 +16,11 @@ import java.util.List;
 public class TravelCalculatePremiumRequest {
     private String personFirstName;
     private String personLastName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate dateOfBirth;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateFrom;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateTo;
     private String country;
+    private String medicalRiskLimitLevel;
     @JsonAlias("selected_risks") private List<String> selectedRisks;
+
 }

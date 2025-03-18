@@ -11,7 +11,6 @@ import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Component
-
 public class ErrorValidationFactory {
 
     private final ErrorMessageUtil errorCodeUtil;

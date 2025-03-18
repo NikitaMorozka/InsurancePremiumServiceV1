@@ -19,13 +19,12 @@ import java.util.List;
 public class TravelCalculatePremiumResponse extends CoreResponse {
     private String personFirstName;
     private String personLastName;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate agreementDateFrom;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate agreementDateTo;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate dateOfBirth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateFrom;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") private LocalDate agreementDateTo;
     private String country;
-    @JsonSerialize(using = BigDecimalSerializer.class)
-    private BigDecimal agreementPremium;
+    private String medicalRiskLimitLevel;
+    @JsonSerialize(using = BigDecimalSerializer.class) private BigDecimal agreementPremium;
     private List<Risks> risks;
 
     public TravelCalculatePremiumResponse(List<ValidationError> errors) {

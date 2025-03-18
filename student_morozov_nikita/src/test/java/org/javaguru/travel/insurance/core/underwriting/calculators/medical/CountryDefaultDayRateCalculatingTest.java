@@ -1,8 +1,7 @@
-package org.javaguru.travel.insurance.core.underwriting.calculators;
+package org.javaguru.travel.insurance.core.underwriting.calculators.medical;
 
 import org.javaguru.travel.insurance.core.domain.CountryDefaultDayRate;
 import org.javaguru.travel.insurance.core.repositories.CountryDefaultDayRateRepository;
-import org.javaguru.travel.insurance.core.util.DateTimeUtil;
 import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,29 +10,31 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TravelMedicalRiskPremiumCalculatorTest {
+class CountryDefaultDayRateCalculatingTest {
 
-    @Mock DateTimeUtil dateTimeUtil;
     @Mock CountryDefaultDayRateRepository countryDefaultDayRateRepository;
     @Mock TravelCalculatePremiumRequest request;
-    @Mock CountryDefaultDayRate countryDefaultDayRate;
 
-    @InjectMocks TravelMedicalCalculatePremiumService calculator;
+    @InjectMocks
+    CountryDefaultDayRateCalculating countryDefaultDayRateCalculating;
 
     @Test
-    void shouldCalculatePremium() {
+    void shouldReturnCorrectCountryDefaultDayRate(){
         when(request.getCountry()).thenReturn("SPAIN");
-        when(dateTimeUtil.calculateDaysDifference(request.getAgreementDateFrom(), request.getAgreementDateTo())).thenReturn(2L);
-        when(countryDefaultDayRate.getDefaultDayRate()).thenReturn(BigDecimal.TEN);
+        CountryDefaultDayRate countryDefaultDayRate = new CountryDefaultDayRate(
+                1L, "SPAIN", new BigDecimal(2.8)
+        );
         when(countryDefaultDayRateRepository.findDefaultDayRateByCountryIc("SPAIN")).thenReturn(Optional.of(countryDefaultDayRate));
-        BigDecimal premium = calculator.calculatePremium(request);
-        assertEquals(new BigDecimal(20L),premium);
+        BigDecimal result = countryDefaultDayRateCalculating.findCountryDefaultDayRate(request).setScale(2, RoundingMode.HALF_UP);
+        assertEquals(new BigDecimal("2.80"), result);
+
     }
 
 }
