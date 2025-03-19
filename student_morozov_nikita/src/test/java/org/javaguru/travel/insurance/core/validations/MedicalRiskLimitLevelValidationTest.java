@@ -81,6 +81,7 @@ class MedicalRiskLimitLevelValidationTest {
                 findByClassifierTitleAndIc("MEDICAL_RISK_LIMIT_LEVEL", "LEVEL_10000"))
                 .thenReturn(Optional.empty());
         ValidationError validationError = mock(ValidationError.class);
+
         when(errorValidationFactory.processing("ERROR_CODE_13")).thenReturn(validationError);
 
         Optional<ValidationError> validationErrorOpt = medicalRiskLimitLevelValidation.validationOptional(request);
