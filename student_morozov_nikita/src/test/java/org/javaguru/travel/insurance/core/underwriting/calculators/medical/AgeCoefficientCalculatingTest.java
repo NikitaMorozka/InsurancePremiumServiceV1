@@ -30,8 +30,8 @@ class AgeCoefficientCalculatingTest {
 
         AgeCoefficient ageCoefficient = new AgeCoefficient(
                 1L,
-                20L,
-                30L,
+                20,
+                30,
                 new BigDecimal("1.20")
         );
 

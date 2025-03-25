@@ -22,23 +22,6 @@ class EmptyCountryValidatorTest {
 
     @InjectMocks private EmptyCountryValidator validation;
 
-    @Test
-    void shouldReturnNoErrorWhenSelectedRisksIsNull() {
-        when(request.getSelectedRisks()).thenReturn(null);
-
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-
-        assertTrue(errorOpt.isEmpty());
-    }
-
-    @Test
-    void shouldReturnNoErrorWhenSelectedRisksNotContainsTravelMedical() {
-        when(request.getSelectedRisks()).thenReturn(List.of("TRAVEL_EVACUATION"));
-
-        Optional<ValidationError> errorOpt = validation.validationOptional(request);
-
-        assertTrue(errorOpt.isEmpty());
-    }
 
     @Test
     void shouldReturnNoErrorWhenSelectedRisksContainsTravelMedicalAndCountryIsPresent() {

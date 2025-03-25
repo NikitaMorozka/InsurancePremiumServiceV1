@@ -27,7 +27,7 @@ class TravelCalculatePremiumServiceImplTest {
 
 
     @Mock private CalculatePremiumUnderwriting calculatePremiumUnderwriting;
-    @Mock  private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
+    @Mock private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
     @Mock private TravelCalculatePremiumRequest request;
     @Mock private TravelPremiumCalculationRisksResult travelPremiumCalculationRisksResult;
 

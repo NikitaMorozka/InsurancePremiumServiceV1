@@ -15,15 +15,13 @@ class EmptyCountryValidator implements ValidationOptional {
 
     @Override
     public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
-        if (containsTravelMedical(request) && countryIsNullOrBlank(request)) {
-            return Optional.of(errorsHandler.processing("ERROR_CODE_10"));
-        }
-        return Optional.empty();
+        return (containsTravel(request) || countryIsNullOrBlank(request))
+                ? Optional.of(errorsHandler.processing("ERROR_CODE_10"))
+                : Optional.empty();
     }
 
-    private boolean containsTravelMedical(TravelCalculatePremiumRequest request) {
-        return request.getSelectedRisks() != null
-                && request.getSelectedRisks().contains("TRAVEL_MEDICAL");
+    private boolean containsTravel(TravelCalculatePremiumRequest request) {
+        return request.getSelectedRisks() == null;
     }
 
     private boolean countryIsNullOrBlank(TravelCalculatePremiumRequest request) {

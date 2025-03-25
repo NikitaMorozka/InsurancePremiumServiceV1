@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.File;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,33 +31,29 @@ class TravelCalculatePremiumControllerTest {
     private JsonFileReader jsonFileReader;
 
     @ParameterizedTest
-    @MethodSource({"jsonRequestResponseFiles"})
-    void controllerTest(String jsonRequest, String jsonResponse) throws Exception {
-        StringBuilder filesPathRequest = new StringBuilder("src/test/resources/rest/request/");
-        StringBuilder filesPathResponse = new StringBuilder("src/test/resources/rest/response/");
-        mockMvc.perform(post("/insurance/travel/")
-                        .content(jsonFileReader.readJsonFromFile(filesPathRequest.append(jsonRequest).toString()))
+    @MethodSource({"jsonTestCases"})
+
+
+    void controllerTest(String testCase) throws Exception {
+
+        String request = String.format("src/test/resources/rest/%s/request.json", testCase);
+        String response = String.format("src/test/resources/rest/%s/response.json", testCase);
+
+        mockMvc.perform(post("/insurance/travel/api/")
+                        .content(jsonFileReader.readJsonFromFile(request))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().json(jsonFileReader.readJsonFromFile(filesPathResponse.append(jsonResponse).toString())))
+                .andExpect(content().json(jsonFileReader.readJsonFromFile(response)))
                 .andReturn();
     }
 
-     static Stream<Arguments> jsonRequestResponseFiles() {
-        return Stream.of(
-                Arguments.of("request1.json", "response1.json"),
-                Arguments.of("request2.json", "response2.json"),
-                Arguments.of("request3.json", "response3.json"),
-                Arguments.of("request4.json", "response4.json"),
-                Arguments.of("request5.json", "response5.json"),
-                Arguments.of("request6.json", "response6.json"),
-                Arguments.of("request7.json", "response7.json"),
-                Arguments.of("request8.json", "response8.json"),
-                Arguments.of("request9.json", "response9.json"),
-                Arguments.of("request10.json", "response10.json"),
-                Arguments.of("request11.json", "response11.json"),
-                Arguments.of("request12.json", "response12.json")
-        );
+    static Stream<Arguments> jsonTestCases() {
+        File dir = new File("src/test/resources/rest");
+        return Stream.of(dir.listFiles(File::isDirectory))
+                .map(File::getName)
+                .sorted()
+                .map(Arguments::of);
     }
+
 
 }

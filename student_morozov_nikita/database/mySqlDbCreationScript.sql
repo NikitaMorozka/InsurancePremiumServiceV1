@@ -45,8 +45,8 @@ CREATE UNIQUE INDEX `ix_country_default_day_rate_country_ic` ON `country_default
 
 CREATE TABLE IF NOT EXISTS `age_coefficient` (
      `id` BIGINT NOT NULL AUTO_INCREMENT,
-     `age_from` BIGINT NOT NULL,
-     `age_to` BIGINT NOT NULL,
+     `age_from` INT NOT NULL,
+     `age_to` INT NOT NULL,
      `coefficient` DECIMAL(10,2) NOT NULL,
      PRIMARY KEY (id)
     )

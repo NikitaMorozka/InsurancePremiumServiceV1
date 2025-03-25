@@ -14,10 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)//: Интегрирует Spring с JUnit 5, чтобы использовать аннотации вроде @Autowired.
-@DataJpaTest//Настраивает тестовую среду
-        //Создаёт базу данных в памяти (H2).
-        //Загружает только компоненты, связанные с JPA (репозитории, сущности).
-        //Делает тесты транзакционными (изменения откатываются после теста).
+@DataJpaTest
 class ClassifierRepositoryTest {
 
     @Autowired

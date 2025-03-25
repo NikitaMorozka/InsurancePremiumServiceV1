@@ -16,18 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/insurance/travel")
+@RequestMapping("/insurance/travel/api")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class TravelCalculatePremiumController {
 
     private final TravelCalculatePremiumService calculatePremiumService;
-
     private final List<EventLogger> loggers;
 
     @PostMapping(path = "/",
             consumes = "application/json",
             produces = "application/json")
-
 
     public TravelCalculatePremiumResponse calculatePremium(@RequestBody TravelCalculatePremiumRequest request) {
         Stopwatch stopwatch = Stopwatch.createStarted();
@@ -37,7 +35,7 @@ public class TravelCalculatePremiumController {
         logObject(stopwatch);
         return response;
     }
-
+//
     private void logObject(Object obj) {
         loggers.forEach(logger -> {
             try {

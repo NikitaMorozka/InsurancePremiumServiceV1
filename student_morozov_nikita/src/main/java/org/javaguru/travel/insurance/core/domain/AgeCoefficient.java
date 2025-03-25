@@ -21,10 +21,10 @@ public class AgeCoefficient {
     private Long id;
 
     @Column(name = "age_from", nullable = false)
-    private Long ageFrom;
+    private Integer ageFrom;
 
     @Column(name = "age_to", nullable = false)
-    private Long ageTo;
+    private Integer ageTo;
 
     @Column(name = "coefficient", precision = 10, scale = 2, nullable = false)
     private BigDecimal coefficient;
