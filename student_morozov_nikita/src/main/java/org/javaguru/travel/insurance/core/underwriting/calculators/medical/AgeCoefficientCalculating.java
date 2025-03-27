@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.travel.insurance.core.domain.AgeCoefficient;
 import org.javaguru.travel.insurance.core.repositories.AgeCoefficientRepository;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,13 +21,13 @@ class AgeCoefficientCalculating {
 
     private final AgeCoefficientRepository ageCoefficient;
 
-    BigDecimal findAgeCoefficient(TravelCalculatePremiumRequest request) {
+    BigDecimal findAgeCoefficient(TravelCalculatePremiumRequestV1 request) {
         return medicalRiskAgeCoefficientEnabled
                 ? getCoefficient(request)
                 : getDefaultValue();
     }
 
-    private BigDecimal getCoefficient(TravelCalculatePremiumRequest request) {
+    private BigDecimal getCoefficient(TravelCalculatePremiumRequestV1 request) {
         int age = (int) ChronoUnit.YEARS.between(request.getDateOfBirth(), LocalDate.now());
         return ageCoefficient.findByAgeCoefficient(age)
                 .map(AgeCoefficient::getCoefficient)

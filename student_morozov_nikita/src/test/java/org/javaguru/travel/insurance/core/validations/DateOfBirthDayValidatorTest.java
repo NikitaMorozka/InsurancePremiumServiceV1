@@ -1,7 +1,7 @@
 package org.javaguru.travel.insurance.core.validations;
 
 
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class DateOfBirthDayValidatorTest {
 
     @Mock private ErrorValidationFactory errorsHandler;
-    @Mock private TravelCalculatePremiumRequest request;
+    @Mock private TravelCalculatePremiumRequestV1 request;
 
     @InjectMocks
     DateOfBirthDayValidator dateOfBirthDayValidator;

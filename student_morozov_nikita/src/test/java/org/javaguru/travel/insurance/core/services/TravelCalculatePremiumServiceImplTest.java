@@ -3,8 +3,8 @@ package org.javaguru.travel.insurance.core.services;
 import org.javaguru.travel.insurance.core.underwriting.CalculatePremiumUnderwriting;
 import org.javaguru.travel.insurance.core.underwriting.TravelPremiumCalculationRisksResult;
 import org.javaguru.travel.insurance.core.validations.TravelCalculatePremiumRequestValidator;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumResponseV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class TravelCalculatePremiumServiceImplTest {
 
     @Mock private CalculatePremiumUnderwriting calculatePremiumUnderwriting;
     @Mock private TravelCalculatePremiumRequestValidator requestValidator;// Создаём мок-зависимость
-    @Mock private TravelCalculatePremiumRequest request;
+    @Mock private TravelCalculatePremiumRequestV1 request;
     @Mock private TravelPremiumCalculationRisksResult travelPremiumCalculationRisksResult;
 
     @InjectMocks
@@ -41,7 +41,7 @@ class TravelCalculatePremiumServiceImplTest {
         when(requestValidator.validate(request)).thenReturn(List.of());
         when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponseV1 response = calculate.calculatePremium(request);
 
         assertEquals("PersonFirstName", response.getPersonFirstName());
     }
@@ -53,7 +53,7 @@ class TravelCalculatePremiumServiceImplTest {
         when(requestValidator.validate(request)).thenReturn(List.of());
         when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponseV1 response = calculate.calculatePremium(request);
 
         assertEquals(request.getPersonFirstName(), response.getPersonFirstName());
     }
@@ -65,7 +65,7 @@ class TravelCalculatePremiumServiceImplTest {
         when(requestValidator.validate(request)).thenReturn(List.of());
         when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponseV1 response = calculate.calculatePremium(request);
 
         assertEquals(request.getAgreementDateFrom(), response.getAgreementDateFrom());
     }
@@ -77,7 +77,7 @@ class TravelCalculatePremiumServiceImplTest {
         when(requestValidator.validate(request)).thenReturn(List.of());
         when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponseV1 response = calculate.calculatePremium(request);
 
         assertEquals(request.getAgreementDateTo(), response.getAgreementDateTo());
     }
@@ -91,7 +91,7 @@ class TravelCalculatePremiumServiceImplTest {
         when(travelPremiumCalculationRisksResult.totalPremium()).thenReturn(new BigDecimal(10L));
         when(calculatePremiumUnderwriting.calculateUnderwriting(request)).thenReturn(travelPremiumCalculationRisksResult);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponseV1 response = calculate.calculatePremium(request);
 
         assertEquals(new BigDecimal(10L), response.getAgreementPremium());
     }

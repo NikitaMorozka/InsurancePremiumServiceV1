@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.validations;
 
 import org.javaguru.travel.insurance.core.domain.ClassifierValue;
 import org.javaguru.travel.insurance.core.repositories.ClassifierValueRepository;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class SelectedRisksValidatorTest {
 
     @Test
     void shouldNotValidateWhenSelectedRisksIsNull() {
-        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        TravelCalculatePremiumRequestV1 request = mock(TravelCalculatePremiumRequestV1.class);
 
         when(request.getSelectedRisks()).thenReturn(null);
 
@@ -39,7 +39,7 @@ class SelectedRisksValidatorTest {
 
     @Test
     void shouldValidateWithoutErrors() {
-        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        TravelCalculatePremiumRequestV1 request = mock(TravelCalculatePremiumRequestV1.class);
 
         when(request.getSelectedRisks()).thenReturn(List.of("RISK_IC_1", "RISK_IC_2"));
         when(classifierValueRepository.findByClassifierTitleAndIc("RISK_TYPE", "RISK_IC_1"))
@@ -52,7 +52,7 @@ class SelectedRisksValidatorTest {
 
     @Test
     void shouldValidateWithErrors() {
-        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        TravelCalculatePremiumRequestV1 request = mock(TravelCalculatePremiumRequestV1.class);
         when(request.getSelectedRisks()).thenReturn(List.of("RISK_IC_1", "RISK_IC_2"));
         when(classifierValueRepository.findByClassifierTitleAndIc("RISK_TYPE", "RISK_IC_1"))
                 .thenReturn(Optional.empty());

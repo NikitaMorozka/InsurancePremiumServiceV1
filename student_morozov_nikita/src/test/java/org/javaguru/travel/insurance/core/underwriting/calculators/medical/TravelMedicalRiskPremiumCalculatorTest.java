@@ -1,6 +1,6 @@
 package org.javaguru.travel.insurance.core.underwriting.calculators.medical;
 
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,8 @@ class TravelMedicalRiskPremiumCalculatorTest {
     @Mock
     MedicalRiskLimitLevelCalculating medicalRiskLimitLevelCalculating;
 
-    @Mock TravelCalculatePremiumRequest request;
+    @Mock
+    TravelCalculatePremiumRequestV1 request;
 
 
     @InjectMocks

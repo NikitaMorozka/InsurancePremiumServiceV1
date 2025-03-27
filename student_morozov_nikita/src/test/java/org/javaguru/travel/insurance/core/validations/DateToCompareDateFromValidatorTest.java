@@ -1,6 +1,6 @@
 package org.javaguru.travel.insurance.core.validations;
 
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DateToCompareDateFromValidatorTest {
 
-    @Mock private TravelCalculatePremiumRequest request;
+    @Mock private TravelCalculatePremiumRequestV1 request;
     @Mock private ErrorValidationFactory errorsHandler;
 
     @InjectMocks

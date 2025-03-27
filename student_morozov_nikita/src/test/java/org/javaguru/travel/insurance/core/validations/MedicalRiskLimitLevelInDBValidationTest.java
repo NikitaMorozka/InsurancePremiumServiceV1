@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.validations;
 
 import org.javaguru.travel.insurance.core.domain.ClassifierValue;
 import org.javaguru.travel.insurance.core.repositories.ClassifierValueRepository;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class MedicalRiskLimitLevelInDBValidationTest {
     @Mock
-    TravelCalculatePremiumRequest request;
+    TravelCalculatePremiumRequestV1 request;
     @Mock
     ClassifierValueRepository classifierValueRepository;
     @Mock

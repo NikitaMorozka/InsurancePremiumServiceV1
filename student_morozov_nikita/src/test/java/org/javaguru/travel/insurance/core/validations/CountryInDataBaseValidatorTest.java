@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.validations;
 
 import org.javaguru.travel.insurance.core.domain.CountryDefaultDayRate;
 import org.javaguru.travel.insurance.core.repositories.CountryDefaultDayRateRepository;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,8 @@ class CountryInDataBaseValidatorTest {
 
     @Mock CountryDefaultDayRateRepository countryDefaultDayRateRepository;
     @Mock ErrorValidationFactory errorsHandler;
-    @Mock TravelCalculatePremiumRequest request;
+    @Mock
+    TravelCalculatePremiumRequestV1 request;
 
     @InjectMocks
     CountryInDataBaseValidator countryInDataBaseValidator;

@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.validations;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class EmptyRisksValidator implements ValidationOptional {
 
 
     @Override
-    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequestV1 request) {
         List<String> risks = request.getSelectedRisks();
 
         boolean hasEmptyRisk = risks.stream().anyMatch(risk -> risk == null || risk.trim().isEmpty());

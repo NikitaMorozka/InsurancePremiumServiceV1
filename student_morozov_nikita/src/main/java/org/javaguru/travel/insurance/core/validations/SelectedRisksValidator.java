@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.travel.insurance.core.repositories.ClassifierValueRepository;
 import org.javaguru.travel.insurance.core.util.Placeholder;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +20,13 @@ public class SelectedRisksValidator implements ValidationList {
     private final ErrorValidationFactory errorsHandler;
 
     @Override
-    public List<ValidationError> validationList(TravelCalculatePremiumRequest request) {
+    public List<ValidationError> validationList(TravelCalculatePremiumRequestV1 request) {
         return request.getSelectedRisks() != null
                 ? validateSelectedRisks(request)
                 : List.of();
     }
 
-    private List<ValidationError> validateSelectedRisks(TravelCalculatePremiumRequest request) {
+    private List<ValidationError> validateSelectedRisks(TravelCalculatePremiumRequestV1 request) {
         return request.getSelectedRisks().stream()
                 .map(this::validateRiskIc)
                 .filter(Optional::isPresent)

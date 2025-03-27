@@ -1,7 +1,7 @@
 package org.javaguru.travel.insurance.core.underwriting;
 
 import org.javaguru.travel.insurance.dto.Risks;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class SelectedRisksPremiumCalculatorTest {
 
     @Mock private TravelPremium premium1;
     @Mock private TravelPremium premium2;
-    @Mock private TravelCalculatePremiumRequest request;
+    @Mock private TravelCalculatePremiumRequestV1 request;
 
     @InjectMocks private SelectedRisksPremiumCalculator selectedRisksPremiumCalculator;
 

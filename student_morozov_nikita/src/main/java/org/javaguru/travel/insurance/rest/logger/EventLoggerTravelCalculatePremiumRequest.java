@@ -3,7 +3,7 @@ package org.javaguru.travel.insurance.rest.logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ class EventLoggerTravelCalculatePremiumRequest implements EventLogger {
 
     @Override
     public void getLog(Object obj) {
-        if (obj instanceof TravelCalculatePremiumRequest request) {
+        if (obj instanceof TravelCalculatePremiumRequestV1 request) {
             try {
                 String json = objectMapper.writeValueAsString(request);
                 logger.info("REQUEST: {}", json);

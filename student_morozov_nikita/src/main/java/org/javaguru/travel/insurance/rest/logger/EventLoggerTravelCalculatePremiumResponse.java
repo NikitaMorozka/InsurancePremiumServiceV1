@@ -1,6 +1,6 @@
 package org.javaguru.travel.insurance.rest.logger;
 
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumResponse;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumResponseV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +19,7 @@ class EventLoggerTravelCalculatePremiumResponse implements EventLogger {
 
     @Override
     public void getLog(Object obj) {
-        if (obj instanceof TravelCalculatePremiumResponse response) {
+        if (obj instanceof TravelCalculatePremiumResponseV1 response) {
             try {
                 String json = objectMapper.writeValueAsString(response);
                 logger.info("RESPONSE: {}", json);

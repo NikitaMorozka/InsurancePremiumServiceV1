@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.validations;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.javaguru.travel.insurance.dto.ValidationError;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class DateOfBirthDayValidator implements ValidationOptional {
     private final ErrorValidationFactory errorsHandler;
 
     @Override
-    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequest request) {
+    public Optional<ValidationError> validationOptional(TravelCalculatePremiumRequestV1 request) {
         if (request.getDateOfBirth() == null) return Optional.of(errorsHandler.processing("ERROR_CODE_11"));
         return request.getDateOfBirth().isAfter(LocalDate.now())
                 ? Optional.of(errorsHandler.processing("ERROR_CODE_12"))

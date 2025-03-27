@@ -2,7 +2,7 @@ package org.javaguru.travel.insurance.core.underwriting.calculators.medical;
 
 import org.javaguru.travel.insurance.core.domain.MedicalRiskLimitLevel;
 import org.javaguru.travel.insurance.core.repositories.MedicalRiskLimitLevelRepository;
-import org.javaguru.travel.insurance.dto.TravelCalculatePremiumRequest;
+import org.javaguru.travel.insurance.dto.v1.TravelCalculatePremiumRequestV1;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +20,8 @@ import static org.mockito.Mockito.when;
 class MedicalRiskLimitLevelCalculatingTest {
 
     @Mock MedicalRiskLimitLevelRepository medicalRiskLimitLevelRepository;
-    @Mock TravelCalculatePremiumRequest request;
+    @Mock
+    TravelCalculatePremiumRequestV1 request;
 
     @InjectMocks
     MedicalRiskLimitLevelCalculating medicalRiskLimitLevelCalculating;
