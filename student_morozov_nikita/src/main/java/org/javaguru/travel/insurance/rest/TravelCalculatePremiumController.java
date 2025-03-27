@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+//testtest
 @RestController
 @RequestMapping("/insurance/travel/api")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -35,7 +35,7 @@ public class TravelCalculatePremiumController {
         logObject(stopwatch);
         return response;
     }
-//
+
     private void logObject(Object obj) {
         loggers.forEach(logger -> {
             try {
